@@ -1,5 +1,7 @@
 ## Python
 
+3 이후의 환경을 로 설명한다.
+
 > ### 링크
 > * Python EXE를 만드는 법 - https://wikidocs.net/21952
 > * 초보가자 구조를 참조하기 좋은 Python Project들 - https://github.com/MunGell/awesome-for-beginners#python 
@@ -208,15 +210,17 @@ class ChildClass(BaseClass): #여기가 상속을 하는 부분. ()안에 Base �
 if __name__ == "__main__":
     a = ChildClass()
     print(isinstance(a, BaseClass))
-    print(ChildClass.__mro__) #이건 class 네임스페이스 내에 있는 상속 관계를 보여주는 네임스페이스.
+    print(ChildClass.__mro__) #class 네임스페이스 내에 있는 상속 관계를 들고있는 네임스페이스. 쉽게 쓰자면 상속관계 확인하는 용도.
 ```
-+ 부모의 참조는 super()를 통해 함께 생성된 부모의 인스턴스 네임스페이스를 참조한다. super로는 부모의 클래스 네임스페이스를 참조할 수 있다.
+**여기서 부터는 분석이 좀 더 필요한 내용이다.**
++ super()를 통해 함께 생성된 부모의 인스턴스 네임스페이스를 참조한다. 
++ super로는 부모의 클래스 네임스페이스를 참조할 수 있다. 다만 부모 Class 네임스페이스를 직접 참조하는 것과는 좀 다르게 자기 자신의 super 네임스페이스로 동작하는 듯 하다. 즉 super === BaseClass 는 **아니다**. 이건 솔직히 느낌적인 느낌으론 알겠는데 자세한 건 더 찾아봐야한다. 어떤 키워드로 검색해야할 지를 모르겠을 뿐...
 ```
 class BaseClass:
     pass
 class ChildClass(BaseClass):
     def __init__(self):
-        super().__init__()
+        super(ChildClass, self).__init__()
     def printSuper(self):
         print(super().__dict__)
         print(super.__dict__)
@@ -225,6 +229,8 @@ if __name__ == "__main__":
     a = ChildClass()
     a.printSuper()
 ```
++ ```super().__init__()```의 호출법이 왜 저런식인지에 대해서는 하기 링크를 참조한다.
+    https://stackoverflow.com/questions/576169/understanding-python-super-with-init-methods
 + Python은 다중 상속을 지원한다.
 ```
 class BaseClass:
@@ -240,5 +246,26 @@ if __name__ == "__main__":
     print(isinstance(a, BaseClass))
     print(isinstance(a, OtherBaseClass))
 ```
-+ 부모의 참조
++ 일단 보이는 문제점은 다중 상속시 super()를 호출하면 첫 번째 부모만 호출이 가능하다는 점이다. Python은 다중 상속으로 인한 함수명 충돌 문제를 첫 번째 부모의 함수를 우선 호출하는 식으로 피했는데 아마도 super가 첫 번째 부모로 지정되어 가능한 것으로 보인다.
++ 따라서 부모 클래스가 둘 이상일 경우, ```super().__init__```은 첫 번째 부모만을 의미하기에 아래와 같은 방법으로 초기화를 진행한다.
+```
+class BaseClass:
+    pass
+class OtherBaseClass:
+    pass
+class ChildClass(BaseClass, OtherBaseClass):
+    def __init__(self):
+        BaseClass.__init__(self)
+        OtherBaseClass.__init__(self)
+if __name__ == "__main__":
+
+    a = ChildClass()
+    print(isinstance(a, BaseClass))
+    print(isinstance(a, OtherBaseClass))
+```
++ 이 부분에서 주목할 게 ```super.__init__(self)```은 에러를 뱉지만 ```BaseClass.__init__(self)```는 멀쩡히 동작한다. 위에 말했던 super와 BaseClass는 동격인가에 대한 물음에 답을 주는 부분.
++ 다만 super는 built_in으로 정의된 상태이기에 다시 지정해줄 수는 없다.
++ 이에 관해 조금 다른 의문점을 또 추가하자면 아래의 예제가 있다.
+https://stackoverflow.com/questions/9575409/calling-parent-class-init-with-multiple-inheritance-whats-the-right-way
+
 
