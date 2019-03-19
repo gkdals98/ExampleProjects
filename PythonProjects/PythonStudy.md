@@ -108,11 +108,11 @@ if __name__ == '__main__':
 + 가령 ```value1 = 2```라면 value1 이라는 이름은 2라는 값에 매핑되어 있는 것이고 이를 들고있는 namespace가 있는 것이다. 여기서 ```value2 = 2```, ```value3 = 2``` 등을 지정하면 value2, value3등도 namespace를 통해 value1과 같은 곳(2)을 참조하게 된다.
 + 각 객체에는 ```__dict__``` 속성이 있다. 이를 참조해 해당 객체의 namespace 목록을 볼 수 있다.
 + 여기서 두 가지 개념이 추가로 등장한다.
-   +Class 네임스페이스
+   * Class 네임스페이스
    ```Python에선 Class의 정의 자체도 하나의 네임스페이스 공간을 가진다. 즉 정의도 하나의 객체이다.```
-   +인스턴스 네임스페이스
+   * 인스턴스 네임스페이스
    ```Class를 이용해 생성된 독립된 객체인 인스턴스의 네임스페이스를 의미한다. 현재 생성되어 사용되고 있는 객체를 의미한다.```
-   +위 두 개념을 확인하기 위해선 아래와 같은 코드를 수행해보면 된다.
+   * 위 두 개념을 확인하기 위해선 아래와 같은 코드를 수행해보면 된다.
    ```
    class ValueTest:
        valueinclass = 8
@@ -150,7 +150,7 @@ print(a.newValue)
 + 위와 같은 자유로운 맴버값 추가때문에 Pycharm등의 IDE는 변수의 맴버 참조 시 없는 이름을 참조해도 에러를 표시하지 않는다.
 
 
-### 8. if 내의 변수
+### 8. if 내에서 정의한 값은 어디 있을까?
 + if 내에서 정의한 값에 대해 햇갈리는 부분. 7에서 다룬 특성으로 인해 if 내의 값을 밖에서 참조하는게 가능하다.
 + 아래의 코드를 실행해보면 정상적으로 ValueInIf값이 출력된다.
 ```
@@ -162,3 +162,83 @@ if __name__ == "__main__":
 ```
 + if를 실행하며 ValueInIf가 현재 실행 중인 모듈(```__name__ == "__main__"```으로 이름을 받아오던)에 네임스페이스로 등록이 되었기 때문이다.
 + 비슷한 코드를 어디서 실행시켜도 동작하며 다만 실행 중인 프로세스 자체에 등록되는 네임스페이스이기에 프로세스 내 어느 객체의 ```__dict__```를 찍어봐도 이를 확인할 수는 없다.
++ 이게 성능에 영향을 줄까? 만약 영향을 준다면 이를 해결하는 방법은 무엇인가. 이 부분은 좀 더 조사해보자.
+
+
+### 9. ```*args, **kwargs```
++ ```*args```는 함수에 가변 개수 인자를 넘겨줄 때 사용한다. args라는 이름은 관례적 이름으로 실질적으론 ```*```이 이 의미를 가진다.
++ dict 타입(네임스페이스)의 적용으로 ```*args```로 넘겨받은 값은 저마다 타입이 다를 수 있다. 
+```
+def printarg(*args):
+    print(args[0])
+
+if __name__ == "__main__":
+    newValues = [1, 2, 3]
+
+    printarg(*newValues)
+    printarg(7, 6, 4)
+```
++ ```**kargs```는 함수에 가변 개수 인자를 dict타입으로 넘겨줄 때 사용한다. 즉, Key값과 값을 함께 넘겨줄 때 사용한다.
++ kwargs라는 이름은 관례적 이름으로 실질적으론 ```**```이 이 의미를 가진다.
+```
+def printkwargs(**kwargs):
+    for key, value in kwargs.items():
+        print("{key} = {value}".format(key=key, value=value))
+
+
+if __name__ == "__main__":
+    newdict = {
+        "Key1": 5,
+        "Key2": 3
+    }
+
+    printkwargs(**newdict)
+    printkwargs(Key1=9, Key2=10)
+```
++ 직접 쓰기도 꽤 쓰겠지만 모듈 내 클래스들을 상속해 쓰다보면 상당히 자주 보인다.
+
+### 10. 상속
++ Python의 상속의 문법은 아래와 같다.
+```
+class BaseClass:
+    pass
+class ChildClass(BaseClass): #여기가 상속을 하는 부분. ()안에 Base 클래스를 적어준다.
+    pass
+
+if __name__ == "__main__":
+    a = ChildClass()
+    print(isinstance(a, BaseClass))
+    print(ChildClass.__mro__) #이건 class 네임스페이스 내에 있는 상속 관계를 보여주는 네임스페이스.
+```
++ 부모의 참조는 super()를 통해 함께 생성된 부모의 인스턴스 네임스페이스를 참조한다. super로는 부모의 클래스 네임스페이스를 참조할 수 있다.
+```
+class BaseClass:
+    pass
+class ChildClass(BaseClass):
+    def __init__(self):
+        super().__init__()
+    def printSuper(self):
+        print(super().__dict__)
+        print(super.__dict__)
+
+if __name__ == "__main__":
+    a = ChildClass()
+    a.printSuper()
+```
++ Python은 다중 상속을 지원한다.
+```
+class BaseClass:
+    pass
+class OtherBaseClass:
+    pass
+class ChildClass(BaseClass, OtherBaseClass):
+    pass
+
+if __name__ == "__main__":
+
+    a = ChildClass()
+    print(isinstance(a, BaseClass))
+    print(isinstance(a, OtherBaseClass))
+```
++ 부모의 참조
+
