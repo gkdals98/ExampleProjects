@@ -104,11 +104,61 @@ if __name__ == '__main__':
 
 
 ### 6. namespace
-+ namespace는 변수가 객체를 바인딩할 때 그 둘 사이의 관계를 저장하고 있는 공간을 의미한다.
-+ 
++ Python의 namespace는 변수가 객체를 바인딩할 때 그 둘 사이의 관계를 저장하고 있는 공간을 의미한다.
++ 가령 ```value1 = 2```라면 value1 이라는 이름은 2라는 값에 매핑되어 있는 것이고 이를 들고있는 namespace가 있는 것이다. 여기서 ```value2 = 2```, ```value3 = 2``` 등을 지정하면 value2, value3등도 namespace를 통해 value1과 같은 곳(2)을 참조하게 된다.
++ 각 객체에는 ```__dict__``` 속성이 있다. 이를 참조해 해당 객체의 namespace 목록을 볼 수 있다.
++ 여기서 두 가지 개념이 추가로 등장한다.
+   *Class 네임스페이스
+   ```Python에선 Class의 정의 자체도 하나의 네임스페이스 공간을 가진다. 즉 정의도 하나의 객체이다.```
+   *인스턴스 네임스페이스
+   ```Class를 이용해 생성된 독립된 객체인 인스턴스의 네임스페이스를 의미한다. 현재 생성되어 사용되고 있는 객체를 의미한다.```
+   *위 두 개념을 확인하기 위해선 아래와 같은 코드를 수행해보면 된다.
+   ```
+   class ValueTest:
+       valueinclass = 8
 
+       def __init__(self):
+           self.valueininstance = 3
+
+    if __name__ == "__main__":
+        a = ValueTest()
+        
+        #아래 라인의 실행결과로는 ValueTest Class의 클래스 네임스페이스 내의 값들이 나온다.
+        #class에서 지정해준 valueinclass의 이름 및 클래스가 가지는 기본적 네임스페이스들은 여기서 확인된다.
+        print(ValueTest.__dict__)
+        
+        #아래 라인의 실행결과로는 ValueTest Class의 인스턴스인 a의 네임스페이스 내의 값들이 나온다.
+        #__init__ 수행 시 생성되는 인스턴스의 self에 추가해준 valueininstance의 이름은 여기서 확인된다.
+        print(a.__dict__)
+   ```
+   
 ### 7. self.value
-+ Python은 동적 타입매핑을 지원해 변수(namespace)의 타입을 명시할 필요가 없다.
-+ ```self.value = 3``` 과 같은 방법으로 인스턴스 내의 맴버 변수를 생성한다.  
-+ class 내에 global로 변수를 선언하면 그건 class의 변수가 된다. 물론 참조할 때는 self를 경위해 참조하기에 독립된 값이 되긴 하지만 가급적 유동적인 값보다는 해당 클래스 내에서 static한 값을 지정해주자.
-+ 
++ ```self.value = 3``` 과 같은 방법으로 객체 내의 맴버 변수를 생성한다.
++ 객체의 맴버 변수는 생성될 때가 아니더라도 언제든지 추가가 가능하다.
++ 인스턴스 생성 이후에 맴버 변수를 추가하는 예제이다.
+```
+a = ValueTest()
+a.newValue = 15
+print(a.newValue)
+```
++ 당연하지만 Class의 정의 또한 하나의 객체이므로 아래와 같은 일도 가능하다.
+```
+ValueTest.newValue = 9
+a = ValueTest()
+print(a.newValue)
+```
++ 위와 같은 자유로운 맴버값 추가때문에 Pycharm등의 IDE는 변수의 맴버 참조 시 없는 이름을 참조해도 에러를 표시하지 않는다.
+
+
+### 8. if 내의 변수
++ if 내에서 정의한 값에 대해 햇갈리는 부분. 7에서 다룬 특성으로 인해 if 내의 값을 밖에서 참조하는게 가능하다.
++ 아래의 코드를 실행해보면 정상적으로 ValueInIf값이 출력된다.
+```
+if __name__ == "__main__":
+    if True:
+        ValueInIf = 9
+
+    print(ValueInIf)
+```
++ if를 실행하며 ValueInIf가 현재 실행 중인 모듈(```__name__ == "__main__"```으로 이름을 받아오던)에 네임스페이스로 등록이 되었기 때문이다.
++ 비슷한 코드를 어디서 실행시켜도 동작하며 다만 실행 중인 프로세스 자체에 등록되는 네임스페이스이기에 프로세스 내 어느 객체의 ```__dict__```를 찍어봐도 이를 확인할 수는 없다.
