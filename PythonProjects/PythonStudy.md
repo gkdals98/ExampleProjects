@@ -53,7 +53,7 @@ C:\Users\hmcho\PycharmProjects\RepositoryMakeTest\TestProject>
 
 ### 1. 모듈의 개념
 + main.py와 같은 py 파일 하나를 모듈이라고 한다. 
-+ 일종의 네임 스페이스, 그러나 자체적으로 실행 가능한 독립된 개체라고 우선 이해하면 된다.
++ 일종의 C의 네임 스페이스(파이썬의 네임스페이스는 아예 다른 개념이다.), 그러나 자체적으로 실행 가능한 독립된 개체라고 우선 이해하면 된다.
 
 ### 2. Python Class의 생성
 + class 키워드를 사용해 class를 정의할 수 있다.
@@ -103,5 +103,12 @@ if __name__ == '__main__':
 + 이 instance와 class의 차이에 대해서는 ```__metaclass__```를 다룰 때 자세히 이야기한다.
 
 
-### 6. self
+### 6. namespace
++ namespace는 변수가 객체를 바인딩할 때 그 둘 사이의 관계를 저장하고 있는 공간을 의미한다.
++ 
 
+### 7. self.value
++ Python은 동적 타입매핑을 지원해 변수(namespace)의 타입을 명시할 필요가 없다.
++ ```self.value = 3``` 과 같은 방법으로 인스턴스 내의 맴버 변수를 생성한다.  
++ class 내에 global로 변수를 선언하면 그건 class의 변수가 된다. 물론 참조할 때는 self를 경위해 참조하기에 독립된 값이 되긴 하지만 가급적 유동적인 값보다는 해당 클래스 내에서 static한 값을 지정해주자.
++ 
