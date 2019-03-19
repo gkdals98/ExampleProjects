@@ -51,10 +51,11 @@ C:\Users\hmcho\PycharmProjects\RepositoryMakeTest\TestProject>
 -----------------------------------
 # Python Basic Study
 
-## 1. 모듈의 개념
-+ main.py와 같은 py 파일 하나를 모듈이라고 한다. 일종의 네임 스페이스라고 우선 이해하면 된다.
+### 1. 모듈의 개념
++ main.py와 같은 py 파일 하나를 모듈이라고 한다. 
++ 일종의 네임 스페이스, 그러나 자체적으로 실행 가능한 독립된 개체라고 우선 이해하면 된다.
 
-## 2. Python Class의 생성
+### 2. Python Class의 생성
 + class 키워드를 사용해 class를 정의할 수 있다.
 ```
 class MyApp(BaseClass):
@@ -62,11 +63,11 @@ class MyApp(BaseClass):
         pass
 ```
 
-## 3. module의 import
-+ from aaa import something 하면 aaa에 있는 something은 aaa.something 이 아닌 something으로 사용할 수 있다.
-+ from없이 import만으로 가져올 경우 -> OuterPy.outer_value로 접근해야한다.
-+ from OuterPy import * 로 가져올 경우 -> 이름만으로 접근 가능. 
-+ from OuterPy i,port outer_value as Out_py 와 같은 식으로 외부 py 내의 특정 객체를 원하는 특정 이름으로 매핑 가능 
+### 3. module의 import
++ ```from aaa import something``` 하면 ```aaa```에 있는 ```something```은 ```aaa.something``` 이 아닌 ```something```으로 사용할 수 있다.
+   * ```from```없이 ```import```만으로 가져올 경우 -> ```OuterPy.outer_value```로 접근해야한다.
+   * ```from OuterPy import *``` 로 가져올 경우 -> 이름만으로 접근 가능. 
++ ```from OuterPy import outer_value as Out_py``` 와 같은 식으로 외부 py 내의 특정 객체를 원하는 특정 이름으로 매핑 가능 
 + .으로 경로 표기를 해야하기에 모듈을 참조할 때 .py 확장자는 쓰지 않는다.
 ```
 from OuterPy import OutString as Out_Py
@@ -80,7 +81,7 @@ if __name__ == '__main__':
     app.on_pring()
 ```
 
-## 4. Double Underscore
+### 4. Double Underscore
 + 흔히 ```__``` 로 시작해서 ```__```로 끝나는 이름들은 보통 시스템에서 정의된 키워드 들이다.
 + 별도 항목없이 바로 설명할 만큼 자주보고 깊게 안들어가는 것들은 아래와 같다.
     * ```__init__(self)``` => 객체의 생성자 속성. 사실상 컨스트럭터 그 자체.
@@ -95,4 +96,12 @@ if __name__ == '__main__':
 암묵적 룰은 강요되는건 아니지만 지키면 가독성이 증가하고 작업속도가 증가한다.
 ```
 
-## 5. self
+### 5. self
++ pythone에서 현재 작업을 수행중인 인스턴스가 자기 자신을 호출하기 위해 사용하는 키워드.
++ python 내의 method들은 method 실행중인 인스턴스를 참조하기 위해 반드시 첫 인자로 self를 넘겨받는다.
++ self는 memory상에서 인스턴스가 바인딩된 장소(id)를 들고있다.
++ 이 instance와 class의 차이에 대해서는 ```__metaclass__```를 다룰 때 자세히 이야기한다.
+
+
+### 6. self
+
