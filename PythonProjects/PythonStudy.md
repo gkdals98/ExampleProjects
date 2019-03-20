@@ -57,7 +57,7 @@ C:\Users\hmcho\PycharmProjects\RepositoryMakeTest\TestProject>
 + main.py와 같은 py 파일 하나를 모듈이라고 한다. 
 + 일종의 C의 네임스페이스 비슷한 것(파이썬의 네임스페이스는 아예 다른 개념이다.), 그러나 자체적으로 실행 가능한 독립된 개체라고 우선 이해하면 된다.
 
-### 2. Python Class의 생성
+### 2. Python Class의 정의 방법
 + class 키워드를 사용해 class를 정의할 수 있다.
 ```
 class MyApp(BaseClass):
@@ -85,7 +85,7 @@ if __name__ == '__main__':
 
 ### 4. Double Underscore
 + 흔히 ```__``` 로 시작해서 ```__```로 끝나는 이름들은 보통 시스템에서 정의된 키워드 들이다.
-+ 별도 항목없이 바로 설명할 만큼 자주보고 깊게 안들어가는 것들은 아래와 같다.
++ 별도 항목으로 설명할 필요가 없을 정도로 쉽고 자주보는 것들은 아래와 같다.
     * ```__init__(self)``` => 객체의 생성자 속성. 사실상 컨스트럭터 그 자체.
     * ```__name__``` => 모듈의 프로세스명. 흔히 해당 모듈이 main으로 돌고있는지를 검사하기위해 참조한다.
     * ```__del__(self)``` => 객체가 파괴되기 전에 호출된다.
@@ -102,7 +102,7 @@ if __name__ == '__main__':
 + pythone에서 현재 작업을 수행중인 인스턴스가 자기 자신을 호출하기 위해 사용하는 키워드.
 + python 내의 method들은 method 실행중인 인스턴스를 참조하기 위해 반드시 첫 인자로 self를 넘겨받는다.
 + self는 memory상에서 인스턴스가 바인딩된 장소(id)를 들고있다.
-+ 이 instance와 class의 차이에 대해서는 ```__metaclass__```를 다룰 때 자세히 이야기한다.
++ 이 instance와 class의 차이에 대해서는 6에서 자세히 이야기한다.
 
 
 ### 6. namespace
@@ -189,7 +189,7 @@ if __name__ == "__main__":
     print(ValueInIf)
 ```
 + if를 실행하며 ValueInIf가 현재 실행 중인 모듈(```__name__ == "__main__"```으로 이름을 받아오던)에 네임스페이스로 등록이 되었기 때문이다.
-+ 비슷한 코드를 어디서 실행시켜도 동작하며 다만 실행 중인 프로세스 자체에 등록되는 네임스페이스이기에 프로세스 내 어느 객체의 ```__dict__```를 찍어봐도 이를 확인할 수는 없다.
++ 비슷한 코드를 어디서 실행시켜도 동작하며 다만 실행 중인 지점 자체에 등록되는 네임스페이스이기에 프로세스 내 어느 객체의 ```__dict__```를 찍어봐도 이를 확인할 수는 없다.
 + 이게 성능에 영향을 줄까? 만약 영향을 준다면 이를 해결하는 방법은 무엇인가. 이 부분은 좀 더 조사해보자.
 
 
@@ -223,7 +223,7 @@ if __name__ == "__main__":
     printkwargs(**newdict)
     printkwargs(Key1=9, Key2=10)
 ```
-+ 직접 쓰기도 꽤 쓰겠지만 모듈 내 클래스들을 상속해 쓰다보면 상당히 자주 보인다. 직접 건드릴 일은 별로 없지만...
++ 직접 쓰기도 꽤 쓰겠지만 모듈 내 클래스들을 상속해 쓰다보면 상당히 자주 보인다.
 
 ### 11. 상속
 + Python의 상속의 문법은 아래와 같다.
@@ -289,7 +289,7 @@ if __name__ == "__main__":
     print(isinstance(a, BaseClass))
     print(isinstance(a, OtherBaseClass))
 ```
-+ 이 부분에서 주목할 게 ```BaseClass.__init__(self)```가 멀쩡히 동작하고있다.. 부모의 클레스네임스페이스인 BaseClass로 자식 인스턴스와 함께 생성된 부모 **인스턴스 네임스페이스**를 참조하고 있다는 뜻인데... 이 부분은 아직 분석이 덜 된 상태.
++ 이 부분에서 주목할 게 ```BaseClass.__init__(self)```가 멀쩡히 동작하고있다.. 부모의 클레스 네임스페이스인 BaseClass로 자식 인스턴스와 함께 생성된 부모 **인스턴스 네임스페이스**를 참조하고 있다는 뜻인데... 이 부분은 아직 분석이 덜 된 상태.
 + 이에 관해 조금 다른 의문점을 또 추가하자면 아래의 예제가 있다.
 https://stackoverflow.com/questions/9575409/calling-parent-class-init-with-multiple-inheritance-whats-the-right-way
 
@@ -297,13 +297,13 @@ https://stackoverflow.com/questions/9575409/calling-parent-class-init-with-multi
 + 위에서 언급한 builtin이란. ```__buildins__```에 정의되어있는 기본 내장 클래스들을 의미한다. type, len, sum등이 대표적이다.
 
 ### 13. classmethod, staticmethod
-+ python에서 static method를 정의하기 위한 두 가지 방법이다. 다만 클래스의 네임스페이스와 인스턴스 네임스페이스가 엄연히 구분되는 파이썬인 만큼 두 가지 방법이 존재한다.
++ python에서 정적 method를 정의하기 위한 두 가지 방법이다. 다만 클래스의 네임스페이스와 인스턴스 네임스페이스가 엄연히 구분되는 파이썬인 만큼 두 가지 방법이 존재한다.
 ##### @staticmethod
-+ **정의된 클래스 네임스페이스**를 기준으로 메서드가 고정된다.
++ **정의된 클래스의 네임스페이스**를 기준으로 메서드가 고정된다.
 + 정의된 클래스를 상속받는 클래스가 있어도 해당 메서드는 변하지 않는다.
 ##### @classmethod
-+ **메서드를 수행하는 클래스 네임스페이스**를 기준으로 메서드가 실행된다.
-+ 만약 정의된 클래스를 상속받는 클래스에서 메서드에 관여하는 인자가 변경되었다면 정의된 클래스의 기준으로 메서드가 실행된다.
++ **메서드를 수행하는 클래스의 네임스페이스**를 기준으로 메서드가 실행된다.
++ 만약 정의된 클래스를 상속받는 클래스에서 메서드에 관여하는 인자가 변경되었다면 새롭게 정의된 클래스를 기준으로 메서드가 실행된다.
 
 + 이를 확인하기 위해 아래의 예제를 참조한다. - https://hamait.tistory.com/635
 ```
@@ -338,7 +338,7 @@ if __name__ == "__main__":
 
 ### 14. 연산자 오버로딩
 + ```+, -, +=, -=```등의 연산자도 ```__add__(self, other)```와 같은 형식으로 상위 클래스인 operator상에 정의된 것이다.
-+ 클래스 내에서 ```__add__```에 대해 오버로딩을 하면 해당 클래스 객체의 연산 방식을 재정의할 수 있다.
++ 클래스 내에서 ```__add__``` 등 오버로딩을 하면 해당 클래스 객체의 연산 방식을 재정의할 수 있다.
 
 ### 15. 추상화 메서드, 추상화 클래스
 + python에선 추상화를 구현하기 위해 abc라는 모듈을 제공한다. 작명이 왜 이 모양일까. builtin은 아니며 import 해주어야 한다.
@@ -354,7 +354,7 @@ class AbstClass(metaclass = abc.ABCMeta):
 
 ### 16. Python Decorator
 ##### Decorator function
-+ Decorator란, 디자인 패턴 중 데코레이터 패턴을 간편하게 구현하도록 해주는 파이썬의 기능이다.
++ Decorator란, 디자인 패턴 중 데코레이터 패턴을 간편하게 구현하도록 도와주는 파이썬의 기능이다. 프로세스 수행중 유동적으로 생성되는 데코레이트를 만드는게 아닌, 로그를 남긴다거나, 특정 형태의 메소드에 반복적으로 들어가는 기능의 구현 등을 편하게 하기 위한 기능이다.
 + ```@```문자를 통해 데코레이터를 호출 가능하다. 우선 Decorator 함수의 예시이다.
 ```
 def printStartEnd(func):
@@ -397,7 +397,7 @@ if __name__ == "__main__" :
     CallableClass(10)()
 ```
 
-##### Decorator class```__call__```
+##### Decorator class
 + ```__call__```을 사용해 class 타입의 데코레이터를 정의할 수 있다. 
 + 인스턴스를 생성할 때 function을 받고, ```__call__```을 정의해 실행 가능한 객체로 만들어 실행되도록 하면 된다.
 + function 방식보다는 덜 간결하지만 더 복잡한 작업을 수행할 수 있다.
@@ -428,5 +428,84 @@ result = Timer(print_hello) #print_hello를 인자로 Timer 객체 생성
 result()                    #생성된 객체의 실행
 ```
 
-### 17. MetaClass
+### 17. MetaClass - https://code.tutsplus.com/ko/tutorials/quick-tip-what-is-a-metaclass-in-python--cms-26016
++ **class 네임스페이스**를 만드는 객체.
++ 일반적인 클래스는 metaclass를 지정해주지 않으면 기본적으로 type을 메타클래스로 삼는다. 즉 class 네임스페이스는 type을 통해 생성된다.
++ 구체적으로 type은 아래와 같은 동작을 수행하는 것이 가능하다.
+```
+newInst = type('myClass', (), {
+    'a': True,
+    'Hello': print("Hello")
+})
+
+newInst.Hello
+```
++ metaclass는 아래와 같은 방법으로 지정해줄 수 있다.
+```
+class MetaTest(metaclass = BaseMeta) 
+```
++ 구체적으로 metaclass를 통해 수행되는 동작은 아래와 같다고 한다.
+```
+myClass = myMetaClass.__new__(myMetaClass, name, bases, dictionary)
+myMetaClass.__init__(myClass, name, bases, dictionary)
+```
+
+### 18. 위 까지의 지식과 MetaClass를 이용한 Singletone 구현법
+```
+class Singleton(type):   #일단 type객체를 상속받아 MetaClass 기능을 가져옴.
+    _instances = {}       #빈 배열인 _instances를 생성.
+    def __call__(cls, *args, **kwargs):		#call의 정의(지금은 metaclass=Singleton으로 call 됨.)
+        if cls not in cls._instances:		#cls._instances안에 없는 cls라면
+            cls._instances[cls] = super(Singleton, cls).__call__(*args, **kwargs)	#super는 type이고 type에 Singleton과 cls를 넣음.
+        return cls._instances[cls]		#최종적으로 해당 Class를 Call로 불렸다면 cls instance를 return하게 된다.
+
+상속은
+class MySingleton(base, metaclass=Singleton):
+    def foo(self):
+        pass
+
+또는
+@Singleton
+class MySingleton2(base):
+    def foo(self):
+       pass
+
+사용은
+MySingleton().foo() 
+```
+
+### 19. os 모듈
++  os.~ 와 같은 식으로 os상에서 특정 프로세스를 실행시키는게 가능.
+
+### 20. threading 모듈 - https://soooprmx.com/archives/8834
++ 파이썬은 모듈기반으로 '특정 시점에 실행중인 파이썬 코드는 하나뿐이다.'라는 인터프리터 락킹이란 개념이 있다. 따라서 코드를 병렬로 분할해서 실행하기 위해서는 인터리빙이라는 방식이 적용되어야 한다. 다중 CPU 환경에서 병렬 실행을 원하는 경우엔 multiprocessing 모듈을 사용한다. 일단 threading은 아래와 같이 사용한다.
+```
+import threading
+
+def sum(low, high):
+    total = 0;
+    for i in range(low, high):
+        total += i
+    print("Subthread", total)
+
+t = threading.Thread(target=sum, args(1, 10000))
+t.start()
+```
+```
+import threading, requests, time
+
+class HtmlGetter(threading.Thread):
+    def __init(self, url):
+        threading.Thread.__init__(self)
+        self.url = url
+    def run(self):
+        resp = requests.get(self.url)
+        time.sleep(1)
+        print(self.url, len(resp.text), 'chars')
+
+t = HtemlGetter(''http://google.com")
+t.deamon = True
+t.start()
+```
++ deamon 속성이 중요하다. deamon이 True인 경우, 해당 서브 스레드는 메인 스레드가 종료될 때 무조건 함께 종료된다. 반면 false인 경우는 main이 종료되더라도 자신의 작업을 끝까지 수행한다. 기본이 False이기에 상황에 맞게 해당 옵션을 True로 바꿔주는 것이 중요하다.
 
