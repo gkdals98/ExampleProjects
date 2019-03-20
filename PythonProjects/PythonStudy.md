@@ -45,6 +45,7 @@ C:\Users\hmcho\PycharmProjects\RepositoryMakeTest\TestProject>env\Scripts\activa
 (env) C:\Users\hmcho\PycharmProjects\RepositoryMakeTest\TestProject>deactivate
 C:\Users\hmcho\PycharmProjects\RepositoryMakeTest\TestProject>
 ```
+* 생성된 virtualenv는 pyCharm의 file>setting>project>project interpreter에서 프로젝트의  지정해줄 수 있다.
 
 > ### 추가적으로 필요한 인프라
 > * Github에서 Clone받은 Project의 venv 의존성이 자동으로 구축되도록 환경을 구성해본다. (목표)
