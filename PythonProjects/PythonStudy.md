@@ -109,7 +109,7 @@ if __name__ == '__main__':
 + Python의 namespace는 변수가 객체를 바인딩할 때 그 둘 사이의 관계를 저장하고 있는 공간을 의미한다.
 + 가령 ```value1 = 2```라면 value1 이라는 이름은 2라는 값에 매핑되어 있는 것이고 이를 들고있는 namespace가 있는 것이다. 여기서 ```value2 = 2```, ```value3 = 2``` 등을 지정하면 value2, value3등도 namespace를 통해 value1과 같은 곳(2)을 참조하게 된다.
 + 각 객체에는 ```__dict__``` 속성이 있다. 이를 참조해 해당 객체의 namespace 목록을 볼 수 있다.
-+ 여기서 두 가지 개념이 추가로 등장한다.
++ 여기서 파이썬 고유의 두 가지 개념이 등장한다.
    * Class 네임스페이스
    ```Python에선 Class의 정의 자체도 하나의 네임스페이스 공간을 가진다. 즉 정의도 하나의 객체이다.```
    * 인스턴스 네임스페이스
@@ -152,7 +152,33 @@ print(a.newValue)
 + 위와 같은 자유로운 맴버값 추가때문에 Pycharm등의 IDE는 변수의 맴버 참조 시 없는 이름을 참조해도 에러를 표시하지 않는다.
 
 
-### 8. if 내에서 정의한 값은 어디 있을까?
+### 8. 추가적인 기본 문법
++ for문의 기본은 아래와 같은 형태
+```for i in range(0, 15, 1)```
++ for문을 반복 가능 객체에서 사용할 경우 아래와 같은 형태
+    * String, index등에서
+    ```for c in "Hello"```
+    * 키, value를 가지는 Dictionary 타입에서
+    ```for key,value in Dictionary.items()```
+    ```for value in Dictionary.values()```
+    ```for key in Dictionary```
+    ```for key in Dictionary.keys()```
++ while문의 기본적인 형태
+```while i < 10```
++ 예외 처리
+```
+try : 
+    z = 10/0
+except ZeroDivisionError as e :
+    print("ZeroDivision")
+finally : 
+    print("Good Bye")
+```
++ Stack, Queue도 class로 재공
+```s = Stack()```
+```q = Queue()```
+
+### 9. if 내에서 정의한 값은 어디 있을까?
 + if 내에서 정의한 값에 대해 햇갈리는 부분. 7에서 다룬 특성으로 인해 if 내의 값을 밖에서 참조하는게 가능하다.
 + 아래의 코드를 실행해보면 정상적으로 ValueInIf값이 출력된다.
 ```
@@ -167,7 +193,7 @@ if __name__ == "__main__":
 + 이게 성능에 영향을 줄까? 만약 영향을 준다면 이를 해결하는 방법은 무엇인가. 이 부분은 좀 더 조사해보자.
 
 
-### 9. ```*args, **kwargs```
+### 10. ```*args, **kwargs```
 + ```*args```는 함수에 가변 개수 인자를 넘겨줄 때 사용한다. args라는 이름은 관례적 이름으로 실질적으론 ```*```이 이 의미를 가진다.
 + dict 타입(네임스페이스)의 적용으로 ```*args```로 넘겨받은 값은 저마다 타입이 다를 수 있다. 
 ```
@@ -197,9 +223,9 @@ if __name__ == "__main__":
     printkwargs(**newdict)
     printkwargs(Key1=9, Key2=10)
 ```
-+ 직접 쓰기도 꽤 쓰겠지만 모듈 내 클래스들을 상속해 쓰다보면 상당히 자주 보인다.
++ 직접 쓰기도 꽤 쓰겠지만 모듈 내 클래스들을 상속해 쓰다보면 상당히 자주 보인다. 직접 건드릴 일은 별로 없지만...
 
-### 10. 상속
+### 11. 상속
 + Python의 상속의 문법은 아래와 같다.
 ```
 class BaseClass:
@@ -263,8 +289,58 @@ if __name__ == "__main__":
     print(isinstance(a, BaseClass))
     print(isinstance(a, OtherBaseClass))
 ```
-+ 이 부분에서 주목할 게 ```BaseClass.__init__(self)```은 여기서 멀쩡히 동작한다. BaseClass 라는 키워드로 생성된 부모의 **인스턴스 네임스페이스**를 참조하고 있다는 뜻인데... 이 부분은 아직 분석이 덜 된 상태.
++ 이 부분에서 주목할 게 ```BaseClass.__init__(self)```가 멀쩡히 동작하고있다.. 부모의 클레스네임스페이스인 BaseClass로 자식 인스턴스와 함께 생성된 부모 **인스턴스 네임스페이스**를 참조하고 있다는 뜻인데... 이 부분은 아직 분석이 덜 된 상태.
 + 이에 관해 조금 다른 의문점을 또 추가하자면 아래의 예제가 있다.
 https://stackoverflow.com/questions/9575409/calling-parent-class-init-with-multiple-inheritance-whats-the-right-way
+
+### 12. builtin 모듈
++ 위에서 언급한 builtin이란. ```__buildins__```에 정의되어있는 기본 내장 클래스들을 의미한다. type, len, sum등이 대표적이다.
+
+### 13. classmethod, staticmethod
++ python에서 static method를 정의하기 위한 두 가지 방법이다. 다만 클래스의 네임스페이스와 인스턴스 네임스페이스가 엄연히 구분되는 파이썬인 만큼 두 가지 방법이 존재한다.
+##### @staticmethod
++ **정의된 클래스 네임스페이스**를 기준으로 메서드가 고정된다.
++ 정의된 클래스를 상속받는 클래스가 있어도 해당 메서드는 변하지 않는다.
+##### @classmethod
++ **메서드를 수행하는 클래스 네임스페이스**를 기준으로 메서드가 실행된다.
++ 만약 정의된 클래스를 상속받는 클래스에서 메서드에 관여하는 인자가 변경되었다면 정의된 클래스의 기준으로 메서드가 실행된다.
+
++ 이를 확인하기 위해 아래의 예제를 참조한다. - https://hamait.tistory.com/635
+```
+class Date:
+    word = "date : "
+    def __init__(self, date):
+        self.date = self.word + date
+
+    @staticmethod
+    def stnow():
+        return Date("today")
+
+    @classmethod
+        def clnow(cls):
+        return cls("today")
+
+    def show(self):
+        print(self.date)
+
+class KoreanDate(Date):
+    word = "날짜 : "
+
+a = Date.stnow()
+a.show()
+
+b = KoreanDate.stnow()
+b.show()
+c = KoreanDate.clnow()
+c.show()
+```
+
+### 14. 연산자 오버로딩
++ ```+, -, +=, -=```등의 연산자도 ```__add__(self, other)```와 같은 형식으로 상위 클래스인 operator상에 정의된 것이다.
++ 클래스 내에서 ```__add__```에 대해 오버로딩을 하면 해당 클래스 객체의 연산 방식을 재정의할 수 있다.
+
+### 15. 추상화 메서드, 추상화 클래스
++ python에선 추상화를 구현하기 위해 abc라는 모듈을 제공한다. 작명이 왜 이 모양일까. builtin은 아니며 import 해주어야 한다.
++ 추상화 메서드의 구현
 
 
