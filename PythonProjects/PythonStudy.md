@@ -1,12 +1,12 @@
 ## Python
 
-3 이후의 환경을 로 설명한다.
+Python 3.0 이후의 환경을 기준으로 study한 내용의 정리.
 
 > ### 링크
 > * Python EXE를 만드는 법 - https://wikidocs.net/21952
 > * 초보가자 구조를 참조하기 좋은 Python Project들 - https://github.com/MunGell/awesome-for-beginners#python 
 
-### 메모
+### 시작하기 전에 준비할 
 * Pycharm cmd 라인 띄우기 - **Alt F12**
 * venv 작업환경 구축을 위해 global로 설치된 모든 의존성을 제거하고 virtualenv 모듈을 설치하는 방법.
 ```
@@ -55,7 +55,7 @@ C:\Users\hmcho\PycharmProjects\RepositoryMakeTest\TestProject>
 
 ### 1. 모듈의 개념
 + main.py와 같은 py 파일 하나를 모듈이라고 한다. 
-+ 일종의 C의 네임 스페이스(파이썬의 네임스페이스는 아예 다른 개념이다.), 그러나 자체적으로 실행 가능한 독립된 개체라고 우선 이해하면 된다.
++ 일종의 C의 네임스페이스 비슷한 것(파이썬의 네임스페이스는 아예 다른 개념이다.), 그러나 자체적으로 실행 가능한 독립된 개체라고 우선 이해하면 된다.
 
 ### 2. Python Class의 생성
 + class 키워드를 사용해 class를 정의할 수 있다.
@@ -325,14 +325,15 @@ class Date:
 
 class KoreanDate(Date):
     word = "날짜 : "
+    
+if __name__ == "__main__":
+    a = Date.stnow()
+    a.show()
 
-a = Date.stnow()
-a.show()
-
-b = KoreanDate.stnow()
-b.show()
-c = KoreanDate.clnow()
-c.show()
+    b = KoreanDate.stnow()
+    b.show()
+    c = KoreanDate.clnow()
+    c.show()
 ```
 
 ### 14. 연산자 오버로딩
@@ -341,6 +342,38 @@ c.show()
 
 ### 15. 추상화 메서드, 추상화 클래스
 + python에선 추상화를 구현하기 위해 abc라는 모듈을 제공한다. 작명이 왜 이 모양일까. builtin은 아니며 import 해주어야 한다.
-+ 추상화 메서드의 구현
++ 추상화 클래스의 구현방법은 아래와 같다.
+```
+import abc
+class AbstClass(metaclass = abc.ABCMeta):
+    @abc.abstractmethod
+    def abcfunc(self):
+        pass
+```
++ 위와 같이 metaclass를 ABCMeta로 지정하고 메서드에 abstractmethod 데코레이터를 달아주면 해당 클래스를 상속받는 클래스들은 abstract 데코레이터가 달린 메서드를 구현하지 않을 시 에러를 표시하게 된다.
 
+### 16. Python Decorator
+##### call - https://jupiny.com/2016/09/25/decorator-class/
++ ```def __call__(self, *args, **kwargs):```은 정의할 시 class로 생성된 instance를 함수처럼 실행가능하게 해준다.
++ 주 목적은 아니지만 원리적으론 아래와 같은게 가능하다.
+```
+class CallableClass:
+    def __init__(self, value):
+        self.value = value
+    def __call__(self, *args, **kwargs):
+        print(self.value)
+
+if __name__ == "__main__" :
+    c = CallableClass(5)
+    c()
+    CallableClass(10)()
+```
++ ```__call__```의 진가는 Python Decorator 클래스를 정의할 때 나타난다.
+##### Decorator
++ Decorator란, 디자인 패턴 중 데코레이터 패턴을 간편하게 구현하도록 해주는 파이썬의 기능이다.
++ ```@```문자를 통해 데코레이터를 호출 가능하다. 구체적으로는 아래와 같은 동작이다.
+```
+def printStartEnd(func):
+    
+```
 
