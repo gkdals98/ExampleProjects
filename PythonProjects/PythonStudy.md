@@ -6,7 +6,7 @@ Python 3.0 이후의 환경을 기준으로 study한 내용의 정리.
 > * Python EXE를 만드는 법 - https://wikidocs.net/21952
 > * 초보가자 구조를 참조하기 좋은 Python Project들 - https://github.com/MunGell/awesome-for-beginners#python 
 
-### 시작하기 전에 준비할 
+### 시작하기 전에 준비할 것들
 * Pycharm cmd 라인 띄우기 - **Alt F12**
 * venv 작업환경 구축을 위해 global로 설치된 모든 의존성을 제거하고 virtualenv 모듈을 설치하는 방법.
 ```
