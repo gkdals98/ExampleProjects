@@ -353,9 +353,37 @@ class AbstClass(metaclass = abc.ABCMeta):
 + 위와 같이 metaclass를 ABCMeta로 지정하고 메서드에 abstractmethod 데코레이터를 달아주면 해당 클래스를 상속받는 클래스들은 abstract 데코레이터가 달린 메서드를 구현하지 않을 시 에러를 표시하게 된다.
 
 ### 16. Python Decorator
+##### Decorator function
++ Decorator란, 디자인 패턴 중 데코레이터 패턴을 간편하게 구현하도록 해주는 파이썬의 기능이다.
++ ```@```문자를 통해 데코레이터를 호출 가능하다. 우선 Decorator 함수의 예시이다.
+```
+def printStartEnd(func):
+    def decorateStartEnd():
+        print("Start")
+        func()
+        print("End")
+    return decorateStartEnd
+```
++ 위와 같이 인자로 function을 받고, return으로 데코레이트 메서드를 반환하는 function을 정의한다.
++ 호출은 아래와 같이 한다.
+```
+@printStartEnd
+def decoratedfunc():
+    print("Executed")
+```
++ 위와 같이 @로 네임스페이스를 호출하면 파이썬은 자동으로 아래의 동작을 한다.
+    * 1. @를 통해 데코레이터로 지정된 객체에 Decorator 대상이 되는 메서드를 인자로 주고 결과 객체를 받는다.
+    * 2. 결과 객체를 실행.
++ 구체적으로 코드로 묘사해보자면 아래와 같다.
+```
+result = printStartEnd(decoratedfunc)
+result()
+```
++ 즉 func을 인자로 받아 return으로 function를 돌려주는 형태의 퍼스트 클래스 함수로 데코레이터를 정의할 수 있으며 @로 사용할 수 있다.
+    
 ##### call - https://jupiny.com/2016/09/25/decorator-class/
 + ```def __call__(self, *args, **kwargs):```은 정의할 시 class로 생성된 instance를 함수처럼 실행가능하게 해준다.
-+ 주 목적은 아니지만 원리적으론 아래와 같은게 가능하다.
++ 원리적으론 아래와 같은게 가능하다. 흔히 접하는 call중 하나가 type의 call로 ```type(instance)```를 수행해 인스턴스의 타입을 알아볼 수 있다.
 ```
 class CallableClass:
     def __init__(self, value):
@@ -368,12 +396,37 @@ if __name__ == "__main__" :
     c()
     CallableClass(10)()
 ```
-+ ```__call__```의 진가는 Python Decorator 클래스를 정의할 때 나타난다.
-##### Decorator
-+ Decorator란, 디자인 패턴 중 데코레이터 패턴을 간편하게 구현하도록 해주는 파이썬의 기능이다.
-+ ```@```문자를 통해 데코레이터를 호출 가능하다. 구체적으로는 아래와 같은 동작이다.
+
+##### Decorator class```__call__```
++ ```__call__```을 사용해 class 타입의 데코레이터를 정의할 수 있다. 
++ 인스턴스를 생성할 때 function을 받고, ```__call__```을 정의해 실행 가능한 객체로 만들어 실행되도록 하면 된다.
++ function 방식보다는 덜 간결하지만 더 복잡한 작업을 수행할 수 있다.
 ```
-def printStartEnd(func):
-    
+import time
+
+class Timer():
+    def __init__(self, function):
+        self.function = function
+
+    def __call__(self, *args, **kwargs):
+        start_time = time.time()
+        result = self.function(*args, **kwargs)
+        end_time = time.time()
+        print("실행시간은 {time}초입니다.".format(time=end_time-start_time))
+        return result
+
+@Timer
+def print_hello(name):
+    print("hello, ", name)
+
+print_hello('python')
 ```
++ 여기서 ```__call__```은 args와 kwargs로 데코레이트되는 함수의 파라미터를 넘겨받는다. 위의 예시에선 print_hello의 인자로 넘겨준 'python'이 args를 통해 넘어온다.
++ function 타입과 실행되는 동작 원리도 똑같다.
+```
+result = Timer(print_hello) #print_hello를 인자로 Timer 객체 생성
+result()                    #생성된 객체의 실행
+```
+
+### 17. MetaClass
 
