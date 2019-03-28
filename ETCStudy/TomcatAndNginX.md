@@ -36,13 +36,11 @@
 
 ### Server
 + Tomcat 그 자체. 서버 인터페이스를 제공하며 Server 하나는 하나의 독자적 JVM instance이다.
-+ Server의 설정 가능한 속성들은 아래와 같다. - https://tomcat.apache.org/tomcat-8.0-doc/config/server.html
++ server.xml에서 설정되는 Server의 주요 속성들은 아래와 같다. - https://tomcat.apache.org/tomcat-9.0-doc/config/server.html
     * className : Server의 구현으로 사용할 Java 클래스 이름. 이 클래스는 org.apache.catalina.Server interface를 구현해야한다. 별도 클래스를 지정하지 않는다면 디폴트인 org.apache.catalina.core.StandardServer가 지정된다.
     * address : 서버가 shutdonw 커맨드의 입력 여부를 리스닝할 TCP/IP 주소이다. 디폴트는 localhost이다.
     * port : Shutdown 명령어를 받을 TCP/IP 포트이다. 기본은 8005로 되어있다. Tomcat을 표준 셸 스크립트를 사용해 실행시키는 경우엔 절대 건드려선 안되지만 Apache Connons Deamon을 사용해 실행시키는 경우엔 -1로 설정해 비활성화 시키는 것이 권장된다.
     * shutdown : 위 설정값들을 통해 어떤 string을 받았을 때 이를 shutdown 커멘드로 인식할 것인가.
-    * 자식 Element들 - ```<Service>```, ```<GlobalNamingResources>```가 있다.
-    * GlobalNamingResources는 대표적으로 아래와 같은 것들이 있다. [보류]
 
 ### Service
 + Connector를 Engine과 연결시켜는 역할이다. Service 자체로는 그 이외의 큰 기능은 없다.
@@ -53,12 +51,11 @@
 
 
 ### Executor
-+ 참고 링크 - https://tomcat.apache.org/tomcat-8.0-doc/config/executor.html , https://jang8584.tistory.com/14
++ 참고 링크 - https://tomcat.apache.org/tomcat-9.0-doc/config/executor.html , https://jang8584.tistory.com/14
 + server.xml 상에는 Service의 자식 element로 기본적으론 주석처리된 Sub Component지만 ThreadPool을 설명하기 위해 핵심 Architecture들과 함께 짚고 넘어간다.
 + **ThreadPool** : 기존 Tomcat은 클라이언트측의 요청이 각각 별도의 쓰레드에 의해 실행되었고 이를 위해 요청마다 쓰레드를 생성하는 과정에서 많은 부하를 일으켰다. 이를 해결하기 위해 3.2버전부터 도입된 것이 Thread Pool이다. Thread Pool 도입 후, 각 요청으로 생성된 Thread는 요청 처리 후에 재사용될 수 있도록 관리되며 open상태로 유지된다. 관리 중이던 Thread는 다른 요청이 들오면 해당 요청을 처리하고 요청 처리 이후엔 다시 관리 대상이 되며 또 다른 요청을 기다린다. Admin은 server.xml의 Thread Pool 설정을 통해 Thread 수의 상한선, idle상태의 Thread에 대한 최대 Thread 개수 및 기동시 생성될 최소한의 Thread 수 등을 설정할 수 있다.
 
 + Executor는 톰캣의 구성요소들이 **공유가능한** Thread Pool을 관리한다. 톰캣에선 커넥터마다 각각 Thread Pool이 생성되나 server.xml에 Executor를 설정해주고 Connector에서 사용할 Executor를 지정해주면 해당 Connector는 Executor를 통해 Thread Pool을 생성하게 된다.
-
 
 + executor는 name, className속성을 가지며 executor만의 속성 및 각 속성의 디폴트값은 아래와 같다.
     * threadPriority : executor 내의 thread의 thread 우선 순위, 디폴트는 Thread.NORM_PRIORITY (숫자로는 5). 
@@ -69,7 +66,7 @@
     * maxIdleTime : 활성 thread 수가 minSpareThreads보다 작거나 같지 않으면 활성 스레드를 종료시키는데, 이 때 종료되기 전까지의 밀리 초 수. 디폴트는 6000
     * maxQueueSize : Queue에 대기 가능한 작업의 최대 수. 디폴트는 Integer.MAX_VALUE
     * prestartminSpareThreads : executor를 시작할 때 minSpareThreads를 실행시킬 것인가. 디폴트는 false.
-    * threadRenewalDelay : Listener를 좀... 좀 알고 와야 이걸 알아먹을 수 있어요.... [보류]
+    * threadRenewalDelay : ThreadLocalLeackPreventionListener가 설정되어있는 경우, Listener가 Executor에 컨텍스트가 정지되었음을 알린 뒤 Executor는 pool내의 thread를 전부  
  + Tomcat의 Thread Pool 수에 대한 확인 예제는 https://sarc.io/index.php/tomcat/1042-tomcat-thread-pool 링크를 읽고 다시 정리하자. [보류]
 
 ### Connector
@@ -78,7 +75,7 @@
 
 + Connector는 HTTP, AJP, DB 연결 등 커넥터에 지정된 프로토콜을 통해 요청을 받고, 받은 요청을 Engine으로 넘기거나 처리된 결과값을 리턴하는 역할을 한다.
 + server.xml 상에선 Service의 자식 element로 설정 가능하다.
-+ 프로토콜마다 다른 Connector를 정의하게 되는데 HTTP Connector 이외에도 AJP Connector가 주로 쓰인다. AJP Connector는 주로 웹 서버와의 연동을 위해 쓰인다.
++ 프로토콜마다 다른 Connector를 정의하게 되는데 HTTP/1.1 Connector, HTTP/2 Connector 이외에도 AJP Connector가 주로 쓰인다. AJP Connector는 주로 웹 서버와의 연동을 위해 쓰인다.
 + 아래부터는 Connector의 핵심 구성요소들을 설명하며 함께 설명하는 속성값은 전부 ```<Connector>``` 태그의 속성값으로 지정할 수 있다.
 + Private Executor 
     * Connector는 executor 속성에 지정된 값이 없다면 자체적으로 private executor를 사용한다. 
@@ -129,27 +126,46 @@
     * /appname과 같이 줬을 때 Host의 appBase상에 /appname 디렉토리로 저장. 접속 시에 http://Hostname/appname 으로 접속
     * /app/appname과 같이 줬을 때 Host의 appBase상에 /app/appname 디렉토리에 저장. 접속 시에 http://Hostname/app/appname으로 접속
     * '/'으로 공백값을 주면 appBase상에 ROOT로 저장이 되며 접속시에도 http://Hostname/ 만으로 접속할 수 있게 된다. Deploy할 app이 해당 호스트 내의 단일 app이라면 추천된다.
-+ Context 요소를 server.xml 파일에 직접 정의하는건 권장되지 않는다. 이는 Context 설정 시 *Tomcat 재시작 없이는 reload가 되지 않기 때문이다.* 저번에 Deploy마다 tomcat을 껐다 켜야했던 문제는 여기서 발생한 것이였다.
-
++ Context 요소를 server.xml 파일에 직접 정의하는건 권장되지 않는다. 이는 기본 Context 요소가 server.xml의 context요소를 덮어쓰며 문제를 일으키기 때문이다. 덮어써진 Context 설정은 *Tomcat 재시작 없이는 reload가 되지 않는다. 즉 반영되지 않는다.* 저번에 Deploy마다 tomcat을 껐다 켜야했던 문제는 여기서 발생한 것이였다.
++ 위 문제를 방지하기 위해 tomcat 9.0부터는 override 속성을 지원하기 시작했다. 추가로 몇 가지 중요해보이는 설정 옵션도 짚고 넘어가자.
+    * override : true로 놓을 경우 디폴트 컨텍스트의 모든 설정을 무시한다. 사용하지 않을 시 context의 속성은 디폴트로 덮어써지게 된다.
+    * path : 웹 응용 프로그램의 '사용자 접근 경로'. 즉 path를 '/start' 로 지정하면 사용자는 'http://hostname/start'로 해당 컨텍스트에 접근하게 된다. '/'로 놓으면 'http://hostname' 만으로 접근할 수 있게 된다.
+    * docBase : path값에 대해 서버상에서 웹 응용프로그램이 작업 공간으로 사용할 폴더. 위 path와 조합하자면 아래와 같은 식으로 동작한다.
+    ```
+    <Context path="/AAA" docBase="app1" .../> => 이 경우 /AAA/index.html 을 통해 /app1/index.html에 접근하게 된다.
+    <Context path="/" docBase="app2" ..../> => 이 경우엔 /index.html로 /app2/index.html에 접근하게 된다.
+    ```
++ 그러나 위 방법으로 적용 Context를 적용시키기엔 역시 불안정함이 따른다. tomcat 5.5 버전 이후부터 제공되는 별도의 Context 설정 위치에서 Context를 설정하는 방법은 아래와 같다.
 
 ## Sub Components
 
 ### Logger
-+ Valve 항목의 하위 항목으로 서술되어있다. https://tomcat.apache.org/tomcat-8.0-doc/config/valve.html#Access_Logging
++ Valve 항목의 하위 항목으로 서술되어있다. https://tomcat.apache.org/tomcat-9.0-doc/config/valve.html
++ server.xml에서 Engine, Host, Context의 자식 element로 작성 가능하며 지정된 컨테이너의 모든 Access 기록을 남긴다.
+
+### Global Resources
++ Global JNDI 자원을 정의한다.
++ **JNDI** : 가령 jdbc가 다른 db 연결 라이브러리로 바뀌어야하는 경우나 jdbc 커넥션 설정 정보와 같이 연관되는 프로퍼티를 바꿔야하는 경우, 코드가 수정되어야 하며 컴파일도 다시 해야한다. JNDI는 외부 xml을 통해 code상에서 db에 접근할 수 있는 jndi-name과 실제 적용될 db 라이브러리 등을 관리한다. 만약 사용하던 라이브러리와 연관되어 변경사항이 생길 시 사용자는 코드 수정없이 xml 설정만을 바꾸면 된다.
++ ResourceLink 요소를 Context 태그 내에 적어주어 Global Resource 태그에 정의한 JNDI를 불러올 수 있다.
++ server.xml의 server의 자식 element로 작성된다.
 
 ### Listener
++ Tomcat에서 발생하는 여러 이벤트 중, 발생 시 통지를 받아야 하거나 조치가 필요한 이벤트들의 발생을 감시하고 발생 시 사용자가 지정한 동작을 수행한다.
++ Listner는 용도에 따른 종류가 다양하며 주로 Thread의 동작 관리, 메모리 등 자원 관리에 관련된 기능들이 많다. 우선은 자원관리 Listener들의 설명은 보류하고 가장 쉬운 Listener 두 개 만 짚고 넘어간다.
+    * Global Resources Lifecycle Listener : server.xml에서 server의 자식 element로 설정. server에서 자식 element로 지정한 Global Resources를 감시한다. 설정값 지정은 필요없다.
+    * Version Logging Lifecycle Listener : server.xml에서 server의 자식 element로 설정하며 설정파일상 위치가 listener중 가장 먼저 와야한다. Tomcat이 시작될 때 톰캣, java, OS의 버전 정보를 기록한다.
 
 ### Cluster
-
-### CookieProcessor
-
-### GlobalResources
++ Tomcat 서버는 복수의 서버를 연결해 하나의 서버처럼 동작하도록 설정, 부하를 분산시키는 클러스터링을 지원한다. 구성이 상당히 복잡하지만 기본구성으로 적용한다면 적용하기 쉽다.
++ server.xml의 Engine 또는 Host의 자식요소로 배치할 수 있다.
++ 복잡한 기능이기에 자체적으로 많은 구성요소를 가지고 있다. 이건 실습을 진행해보고 개념을 읽어야 할 것 같다. 추후에 별도의 항목으로 다룬다. [보류]
 
 ### Realm
-
++ 웹 애플리케이션의 정당한 사용자들을 인증하고 각 사용자에 맞는 role을 지정하는 사용자 정보의 database이다.
++ Engine, Host, Context의 자식 element로 복수개 설정 가능하며 설정 방법이 정말 다양하다.
++ https://tomcat.apache.org/tomcat-9.0-doc/realm-howto.html - 공식 문서의 가이드. A to Z로 아는 것 보다는 실습을 통해 필요한 부분들을 알아가는게 좋아보인다.
 
 
 # NginX
 > 정말 좋은 블로그를 찾은 것 같다. - https://sarc.io/index.php/nginx?start=60
 > 다만 좀 나중에 읽자. 일단 스텝 바이 스텝이라는거지.
-
