@@ -16,7 +16,7 @@
 
 ### Spring Security의 뼈대 되짚기
 + 우리가 Spring Security를 구축하기 위해 정확히 뭘 필요로 했었는가.
-+ 우선 필요한 구성요소들을 되짚어본다.
++ Security를 구성하며 생성했던 요소들을 되짚어보자.
 
 1. **SecurityConfig**
 2. **UserAccountService**
@@ -31,13 +31,13 @@
 2. **UserDetailsService** (UserAccountService) - Login 시도에 관여. 로그인 요청을 분석하고 개발자가 원하는 적절한 방법으로 계정을 찾거나 찾지 못했음을 알린다.
 3. **UserDetails** (UserDetailsImpl) - 생성될 시 UserAccountEntity를 받는다. 로그인 시도에 대해 검증 절차를 구현한다.
 
-+ 제공되는 기능이 많은 프레임워크일수록, 어디까지가 구현의 뼈대이고 어디부터가 추가구현인지의 구분이 중요해진다. 기본 틀을 잡고 거기에 원하는 기능을 덧붙이는 식으로 구현할 때, 이런 뼈대를 우선 잡고 들어간다면 작업이 한 결 수월해질 것이다.
++ 제공되는 기능이 많은 프레임워크일수록, 어디까지가 구현의 뼈대이고 어디부터가 추가구현인지의 구분이 중요해진다. 기본 틀을 잡고 거기에 원하는 기능을 덧붙이는 식으로 구현할 때, 뼈대를 먼저 잡고 구현을 시작한다면 작업이 한 결 수월해질 것이다.
 
 ## Spring Security 무작정 따라하기
 
 + Security도 Spring인 만큼, 어디다가 ~를 적어주세요 하는 요구사항이 있고 요구사항에 맞게 적어만 주면 이후엔 Security가 알아서 한다는 느낌으로 이해하면 된다.
 + oath2나 csrf 공격 방지 등이 없이 진짜 기본만 구현하는 법을 복습한다. 단 mysql + hibernate는 사용한다.
-+ 구현 순서에 따른 설명으로 진행한다. 아키텍쳐등을 우선 고려하지 않을 것이기에 우선 현상 위주의 설명으로 간다.
++ 구현 순서에 따른 설명으로 진행한다. 아키텍쳐등을 고려하지 않을 것이기에 우선 현상 위주의 설명으로 간다.
 
 #### 1. Gradle Dependency
 + Build툴을 Gradle로 Spring Boot Project를 생성한다.
@@ -53,7 +53,7 @@
 ```
 
 #### 2. DB 생성 및 properties값 추가
-+ 우선 mysql은 local에 위치하며 db이름은 testdb로 만든 것을 전제로 한다. 생성된 저장소에 따로 더 설정할 건 없다.
++ 예제는 mysql은 local에 위치하며 db이름은 testdb로 만든 것을 전제로 진행한다. 생성된 저장소에 따로 더 설정할 건 없다.
 
 + 아래 내용을 src/main/resources의 application.properties에 추가하면 되는데.....
 + 예제를 작성하는 과정에서 오류가 발생했다. SSL과 관련된 부분인데 SSL을 false로 설정해 임시로 오류를 해결했다. 이에 나중에 이 문제를 해결하려면 기록이 필요할 것 같아 오류 해결 과정 로그를 남긴다.
@@ -102,7 +102,7 @@ spring.datasource.sql-script-encoding=UTF-8
 spring.datasource.initialization-mode=always
 spring.datasource.data=classpath:/sql/init_system_info-stp.sql,classpath:/sql/init_user_info.sql
 ```
-+ url의 설정에서 useSSL=false로 바꿨더니 된다. 이건.... 이건 나중에 좀 다시 봐야한다. 우선 Security 예제를 진행하는 동안은 이대로 두자.
++ url의 설정에서 useSSL=false로 바꿨더니 된다. 이건.... 이건 나중에 좀 다시 봐야한다. Security 예제를 진행하는 동안은 이대로 두자.
 
 #### 3. Controller와 로그인용 페이지, 목적지가 될 main페이지를 만들어준다.
 + 아래와 같은 간단한 Controller를 작성해준다.
@@ -120,7 +120,7 @@ public class cmBasicappController {
 }
 ```
 
-+ src/main/resources의 static 폴더 밑에 html 폴더를 만들고 그 안에 login 폴더를 만든다. login.html을 그 안에 만들고 내용은 우선 아래정도로만 해서 써도 무방하다.
++ src/main/resources의 static 폴더 밑에 html 폴더를 만들고 그 안에 login 폴더를 만든 뒤 login.html을 그 안에 생성한다. 페이지는 아래정도로만 구현해도 무방하다.
 ```
 <!DOCTYPE html>
 <html>
