@@ -18,18 +18,18 @@
 + 우리가 Spring Security를 구축하기 위해 정확히 뭘 필요로 했었는가.
 + 우선 필요한 구성요소들을 되짚어본다.
 
-1. SecurityConfig
-2. UserAccountService
-3. UserDetailsService
-4. UserAccountRepository
-5. UserAccountEntity
-6. login.html - 이건 좀 외적인거지만 아무튼.
+1. **SecurityConfig**
+2. **UserAccountService**
+3. **UserDetailsService**
+4. **UserAccountRepository**
+5. **UserAccountEntity**
+6. **login.html** - 이건 좀 외적인거지만 아무튼.
 
 + 여기서 security의 핵심만을 구현대상 명으로 정리하자면 아래와 같이 된다.
 
-1. WebSecurityConfigurerAdapter (SecurityConfig) - 모든 요청에 대해 관여
-2. UserDetailsService(UserAccountService) - Login 시도에 관여. 로그인 요청을 분석하고 개발자가 원하는 적절한 방법으로 계정을 찾거나 찾지 못했음을 알린다.
-3. UserDetails(UserDetailsImpl) - 생성될 시 UserAccountEntity를 받는다. 로그인 시도에 대해 검증 절차를 구현한다.
+1. **WebSecurityConfigurerAdapter** (SecurityConfig) - 모든 요청에 대해 관여
+2. **UserDetailsService** (UserAccountService) - Login 시도에 관여. 로그인 요청을 분석하고 개발자가 원하는 적절한 방법으로 계정을 찾거나 찾지 못했음을 알린다.
+3. **UserDetails** (UserDetailsImpl) - 생성될 시 UserAccountEntity를 받는다. 로그인 시도에 대해 검증 절차를 구현한다.
 
 + 제공되는 기능이 많은 프레임워크일수록, 어디까지가 구현의 뼈대이고 어디부터가 추가구현인지의 구분이 중요해진다. 기본 틀을 잡고 거기에 원하는 기능을 덧붙이는 식으로 구현할 때, 이런 뼈대를 우선 잡고 들어간다면 작업이 한 결 수월해질 것이다.
 
@@ -177,7 +177,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 }
 ```
 + @EnableWebSecurity는 Class가 WebSecurityConfigurerAdapter 클래스를 확장하며 해당 클래스의 구현을 통해 보안 구성을 정의할 것임을 알린다. 이 어노테이션을 구현 클래스에 추가하는것 만으로도 WebSecurityConfigurerAdapter가 인식되며 Webapp이 잠긴다.
-+ ```public void configure(WebSecurity web)``` : 전역 보안에 영향을 주는 구성을 채크한다. 주로 리소스에 관련된 것들이 많다. 내용에 대한 것은 아래와 같다.
++ ```public void configure(WebSecurity web)``` : 전역 보안에 대한 설정을 할 수 있다. 주로 리소스에 관련된 것들이 많다. 내용에 대한 것은 아래와 같다.
     * ```web.ignoring().antMatchers()``` - 인자로 받은 요청 web에 대해, antMatchers의 조건에 해당한다면 ignoring()을 수행한다. 즉, 요청을 무시한다. 현 내용상에는 resource에 해당하는 모든 경로를 차단하고 있다.
 + ```protected void configure(HttpSecurity http)``` : http 요청에 대한 보안을 구성할 수 있다.
 + 기본적인 접근 설정을 위해 configure(http)를 아래와 같이 수정해준다.
@@ -236,9 +236,9 @@ public class cmUserAccountEntity {
 + application을 실행해 Table이 DB상에 생성된 것을 확인한다.
 
 #### 6. UserAccountRepository 구현
-+ UserAccountRepository를 구현해 우선 UserEntity에 접근 가능하도록 만들어야한다.
-+ User를 어디서 받아올지, User는 구체적으로 무엇인지에 대한 정의까지는 개발자가 해야하기 때문.
-+ 아래 간단한 Entity용 Repository를 정의하자. Hibernate에서 제공하는 프레임워크이기에 Security를 공부하는 동안은 아 그냥 이렇게 적으면 hibernate가 알아서 기능구현을 해주겠구나 하고 넘기면 된다.
++ UserAccountRepository를 구현해 프로그렘이 UserEntity에 접근 가능하도록 만들어야한다.
++ 이 과정은 User정보를 Hibernate로 쓸 예정이기에 필요하다. User Data를 어디서 받아올지, User Data는 구체적으로 어떤 형식인지에 대한 정의는 전적으로 개발자가 해야한다.
++ 아래의 간단한 Repository를 구현하자.Repository는 Hibernate에서 제공하는 프레임워크이기에 Security를 공부하는 동안은 아 그냥 이렇게 적으면 hibernate가 알아서 기능구현을 해주겠구나 하고 넘기면 된다.
 ```
 public interface cmUserAccountRepository extends CrudRepository<cmUserAccountEntity, String>{
 	Long countByUserid(String userid);
