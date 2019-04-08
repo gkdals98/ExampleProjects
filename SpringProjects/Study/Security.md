@@ -319,7 +319,7 @@ public class cmUserDetailsImpl implements UserDetails{
 
 #### 8. UserDetailsService의 구현.
 + UserDetailsServie 객체는 로그인 시도가 있을시 실행되는 loadUserByUsernaem 메서드를 가지고있는 서비스 클래스이다. AuthencationProvider은 UserDetailsService의 loadUserByUsername을 실행해 계정 정보를 UserDetails 타입으로 리턴받는다.
-+ 예제에서 UserDetailsService는 우선 아래와 같이 구현해준다.
++ 예제에서 UserDetailsService는 아래와 같이 구현해준다.
 ```
 #### @Service("userDetailService")
 public class cmUserAccountService implements UserDetailsService{
