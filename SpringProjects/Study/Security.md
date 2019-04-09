@@ -43,6 +43,7 @@
 #### 1. Gradle Dependency
 + Build툴을 Gradle로 Spring Boot Project를 생성한다.
 + 프로젝트의 build.gradle에 아래 dependency를 추가한다. hibernate, security 구성에 그냥저냥 기본적인 구성들이다.
++ 사용하고 있는 IDE에 따른 lombok구성도 필요로 한다. ide 이름 + lombok으로 검색하면 상세히 나온 사이트가 아주 많다.
 ```
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
