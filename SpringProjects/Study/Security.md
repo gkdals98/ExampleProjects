@@ -42,8 +42,8 @@
 
 #### 1. Gradle Dependency
 + Build툴을 Gradle로 Spring Boot Project를 생성한다.
-+ 프로젝트의 build.gradle에 아래 dependency를 추가한다. hibernate, security 구성에 그냥저냥 기본적인 구성들이다.
 + 사용하고 있는 IDE에 따른 lombok구성도 필요로 한다. ide 이름 + lombok으로 검색하면 상세히 나온 사이트가 아주 많다.
++ 프로젝트의 build.gradle에 아래 dependency를 추가한다. hibernate, security 구성에 그냥저냥 기본적인 구성들이다.
 ```
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
@@ -143,7 +143,7 @@ public class cmBasicappController {
 </html>
 ```
 + 여기서 input name으로 설정된 j_usermname, j_password는 시큐리티가 id, password를 구분하도록 지어준 필드명이다.
-+ submit을 누를 경우, 데이터는 post 메시지로 backend의 /logindata 경로로 가도록 설정해줬다.
++ submit을 누를 경우, 데이터는 post 메시지로 backend의 /logindata 경로로 가도록 작성했다. form 태그의 기능이기에 저렇게만 작성해줘도 동작한다. 
 + static 폴더 안에 main 폴더를 만들고 main.html을 만들어준다. main.html은 별다른 기능이 없어도 좋다.
 ```
 <!DOCTYPE html>
@@ -178,7 +178,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 }
 ```
-+ @EnableWebSecurity는 Class가 WebSecurityConfigurerAdapter 클래스를 확장하며 해당 클래스의 구현을 통해 보안 구성을 정의할 것임을 알린다. 이 어노테이션을 구현 클래스에 추가하는것 만으로도 WebSecurityConfigurerAdapter가 인식되며 Webapp이 잠긴다.
++ @EnableWebSecurity는 '이 어노테이션이 달린 Class가 WebSecurityConfigurerAdapter 클래스를 상속하며 해당 클래스의 구현을 통해 보안 구성을 정의할 것'임을 알린다. 이 어노테이션을 구현 클래스에 추가하는것 만으로도 WebSecurityConfigurerAdapter가 인식되며 기본 로그인기능이 설정돼 Webapp이 잠긴다.
 + ```public void configure(WebSecurity web)``` : 전역 보안에 대한 설정을 할 수 있다. 주로 리소스에 관련된 것들이 많다. 내용에 대한 것은 아래와 같다.
     * ```web.ignoring().antMatchers()``` - 인자로 받은 요청 web에 대해, antMatchers의 조건에 해당한다면 ignoring()을 수행한다. 즉, 요청을 무시한다. 현 내용상에는 resource에 해당하는 모든 경로를 차단하고 있다.
 + ```protected void configure(HttpSecurity http)``` : http 요청에 대한 보안을 구성할 수 있다.
