@@ -107,7 +107,7 @@ spring.datasource.data=classpath:/sql/init_system_info-stp.sql,classpath:/sql/in
 + url의 설정에서 useSSL=false로 바꿨더니 된다. 이건.... 이건 나중에 좀 다시 봐야한다. Security 예제를 진행하는 동안은 이대로 두자.
 
 #### 3. Controller와 로그인용 페이지, 목적지가 될 main페이지를 만들어준다.
-+ 아래와 같은 간단한 Controller를 작성해준다.
++ 아래와 같은 간단한 Controller Class를 작성해준다.
 ```
 @Controller
 public class cmBasicappController {
@@ -180,9 +180,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 ```
 + @EnableWebSecurity는 '이 어노테이션이 달린 Class가 WebSecurityConfigurerAdapter 클래스를 상속하며 해당 클래스의 구현을 통해 보안 구성을 정의할 것'임을 알린다. 이 어노테이션을 구현 클래스에 추가하는것 만으로도 WebSecurityConfigurerAdapter가 인식되며 기본 로그인기능이 설정돼 Webapp이 잠긴다.
 + ```public void configure(WebSecurity web)``` : 전역 보안에 대한 설정을 할 수 있다. 주로 리소스에 관련된 것들이 많다. 내용에 대한 것은 아래와 같다.
-    * ```web.ignoring().antMatchers()``` - 인자로 받은 요청 web에 대해, antMatchers의 조건에 해당한다면 ignoring()을 수행한다. 즉, 요청을 무시한다. 현 내용상에는 resource에 해당하는 모든 경로를 차단하고 있다.
-+ ```protected void configure(HttpSecurity http)``` : http 요청에 대한 보안을 구성할 수 있다.
-+ 기본적인 접근 설정을 위해 configure(http)를 아래와 같이 수정해준다.
+    * ```web.ignoring().antMatchers()``` - 인자로 받은 web요청에 대해, antMatchers의 조건에 해당한다면 ignoring()을 수행한다. 즉, 요청을 무시한다. 현 내용상에는 resource에 해당하는 모든 경로를 차단하고 있다.
++ ```protected void configure(HttpSecurity http)``` : http 요청에 대한 보안을 구성할 수 있다. 핵심이 되는 부분이라 아래 이어지는 코드로 분리해 설명한다. 기본적인 접근 설정을 위해 configure(http)를 아래와 같이 수정해준다.
 ```
     @Override
     public void configure(HttpSecurity http) throws Exception{
@@ -205,7 +204,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 + 해당 내용을 모두 적용하고 application을 동작시킨 뒤 localhost:8080으로 접속하면 아래와 같은 변화가 생긴다.
     * loginpage 설정이 적용되면서 시큐리티의 기본 제공 로그인이 안 뜸.
-    * 모든 경로에 permitAll이기에 로그인 페이지 없이 메인페이지로 바로 가버림.
+    * 접근 설정이 모든 경로에 permitAll로 되어있기에 로그인 페이지 출력없이 루트경로인 메인페이지로 바로 가버림.
 
 #### 5. UserEntity를 만들어야 한다.
 + Role은 보통 별도의 enum table로 분리해서 관리하지만 지금은 예제다. 예제 특성상 사용했던 테이블을 나중엔 지워야하고 지우기에는 Role을 같은 테이블에 두는 쪽이 편하다. 그러니 Role은 그냥 String 값으로 한다. Role을 별도 테이블로 관리하는 방법은 추후에 다룬다.
