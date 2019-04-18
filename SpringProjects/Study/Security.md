@@ -42,8 +42,8 @@
 
 #### 1. Gradle Dependency
 + Build툴을 Gradle로 Spring Boot Project를 생성한다.
-+ 프로젝트의 build.gradle에 아래 dependency를 추가한다. hibernate, security 구성에 그냥저냥 기본적인 구성들이다.
 + 사용하고 있는 IDE에 따른 lombok구성도 필요로 한다. ide 이름 + lombok으로 검색하면 상세히 나온 사이트가 아주 많다.
++ 프로젝트의 build.gradle에 아래 dependency를 추가한다. hibernate, security 구성에 그냥저냥 기본적인 구성들이다.
 ```
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
@@ -107,7 +107,7 @@ spring.datasource.data=classpath:/sql/init_system_info-stp.sql,classpath:/sql/in
 + url의 설정에서 useSSL=false로 바꿨더니 된다. 이건.... 이건 나중에 좀 다시 봐야한다. Security 예제를 진행하는 동안은 이대로 두자.
 
 #### 3. Controller와 로그인용 페이지, 목적지가 될 main페이지를 만들어준다.
-+ 아래와 같은 간단한 Controller를 작성해준다.
++ 아래와 같은 간단한 Controller Class를 작성해준다.
 ```
 @Controller
 public class cmBasicappController {
@@ -143,7 +143,7 @@ public class cmBasicappController {
 </html>
 ```
 + 여기서 input name으로 설정된 j_usermname, j_password는 시큐리티가 id, password를 구분하도록 지어준 필드명이다.
-+ submit을 누를 경우, 데이터는 post 메시지로 backend의 /logindata 경로로 가도록 설정해줬다.
++ submit을 누를 경우, 데이터는 post 메시지로 backend의 /logindata 경로로 가도록 작성했다. form 태그의 기능이기에 저렇게만 작성해줘도 동작한다. 
 + static 폴더 안에 main 폴더를 만들고 main.html을 만들어준다. main.html은 별다른 기능이 없어도 좋다.
 ```
 <!DOCTYPE html>
@@ -178,11 +178,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 }
 ```
-+ @EnableWebSecurity는 Class가 WebSecurityConfigurerAdapter 클래스를 확장하며 해당 클래스의 구현을 통해 보안 구성을 정의할 것임을 알린다. 이 어노테이션을 구현 클래스에 추가하는것 만으로도 WebSecurityConfigurerAdapter가 인식되며 Webapp이 잠긴다.
++ @EnableWebSecurity는 '이 어노테이션이 달린 Class가 WebSecurityConfigurerAdapter 클래스를 상속하며 해당 클래스의 구현을 통해 보안 구성을 정의할 것'임을 알린다. 이 어노테이션을 구현 클래스에 추가하는것 만으로도 WebSecurityConfigurerAdapter가 인식되며 기본 로그인기능이 설정돼 Webapp이 잠긴다.
 + ```public void configure(WebSecurity web)``` : 전역 보안에 대한 설정을 할 수 있다. 주로 리소스에 관련된 것들이 많다. 내용에 대한 것은 아래와 같다.
-    * ```web.ignoring().antMatchers()``` - 인자로 받은 요청 web에 대해, antMatchers의 조건에 해당한다면 ignoring()을 수행한다. 즉, 요청을 무시한다. 현 내용상에는 resource에 해당하는 모든 경로를 차단하고 있다.
-+ ```protected void configure(HttpSecurity http)``` : http 요청에 대한 보안을 구성할 수 있다.
-+ 기본적인 접근 설정을 위해 configure(http)를 아래와 같이 수정해준다.
+    * ```web.ignoring().antMatchers()``` - 인자로 받은 web요청에 대해, antMatchers의 조건에 해당한다면 ignoring()을 수행한다. 즉, 요청을 무시한다. 현 내용상에는 resource에 해당하는 모든 경로를 차단하고 있다.
++ ```protected void configure(HttpSecurity http)``` : http 요청에 대한 보안을 구성할 수 있다. 핵심이 되는 부분이라 아래 이어지는 코드로 분리해 설명한다. 기본적인 접근 설정을 위해 configure(http)를 아래와 같이 수정해준다.
 ```
     @Override
     public void configure(HttpSecurity http) throws Exception{
@@ -205,7 +204,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 + 해당 내용을 모두 적용하고 application을 동작시킨 뒤 localhost:8080으로 접속하면 아래와 같은 변화가 생긴다.
     * loginpage 설정이 적용되면서 시큐리티의 기본 제공 로그인이 안 뜸.
-    * 모든 경로에 permitAll이기에 로그인 페이지 없이 메인페이지로 바로 가버림.
+    * 접근 설정이 모든 경로에 permitAll로 되어있기에 로그인 페이지 출력없이 루트경로인 메인페이지로 바로 가버림.
 
 #### 5. UserEntity를 만들어야 한다.
 + Role은 보통 별도의 enum table로 분리해서 관리하지만 지금은 예제다. 예제 특성상 사용했던 테이블을 나중엔 지워야하고 지우기에는 Role을 같은 테이블에 두는 쪽이 편하다. 그러니 Role은 그냥 String 값으로 한다. Role을 별도 테이블로 관리하는 방법은 추후에 다룬다.
