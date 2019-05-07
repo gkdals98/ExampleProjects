@@ -31,19 +31,19 @@
 2. **UserDetailsService** (UserAccountService) - Login 시도에 관여. 로그인 요청을 분석하고 개발자가 원하는 적절한 방법으로 계정을 찾거나 찾지 못했음을 알린다.
 3. **UserDetails** (UserDetailsImpl) - 생성될 시 UserAccountEntity를 받는다. 로그인 시도에 대해 검증 절차를 구현한다.
 
-+ 제공되는 기능이 많은 프레임워크일수록, 어디까지가 구현의 뼈대이고 어디부터가 추가구현인지의 구분이 중요해진다. 기본 틀을 잡고 거기에 원하는 기능을 덧붙이는 식으로 구현할 때, 뼈대를 먼저 잡고 구현을 시작한다면 작업이 한 결 수월해질 것이다.
-+ 이를 구현하는 과정을 최종적으론 아래와 같이 정리했다.
++ 제공되는 기능이 많은 프레임워크일수록, 어디까지가 구현의 뼈대이고 어디부터가 추가구현인지의 구분이 중요하다. 필수 뼈대를 먼저 잡고 원하는 덧붙이는 식으로 구현을 시작한다면 작업이 한 결 수월해지기 때문.
++ Spring Security의 가장 기초적인 뼈대를 구현하는 과정은 아래와 같다.
 
 ### 따라해보기
 
-+ Security도 Spring인 만큼, 어디다가 ~를 적어주세요 하는 요구사항이 있고 요구사항에 맞게 적어만 주면 이후엔 Security가 알아서 한다는 느낌으로 이해하면 된다.
-+ oath2나 csrf 공격 방지 등이 없이 진짜 기본만 구현하는 법을 복습한다. 단 mysql + hibernate는 사용한다.
++ Security도 Spring인 만큼, 규격에 따른 구현서를 작성한다는 느낌으로 구현하면 된다. Spring Security가 여기엔 ~를 적어주세요 하는 요구사항을 주면 프로그래머는 그에 맞게 구현하고 싶은 내용을 적어주면 된다. 이후엔 Security가 알아서 한다는 느낌으로 이해하면 된다.
++ 이번엔 oath2나 csrf 공격 방지 등이 없이 진짜 기본만 구현하는 법을 복습한다. 단 mysql + hibernate는 사용한다.
 + 구현 순서에 따른 설명으로 진행한다. 아키텍쳐등을 고려하지 않을 것이기에 우선 현상 위주의 설명으로 간다.
 
 #### 1. Gradle Dependency
-+ Build툴을 Gradle로 Spring Boot Project를 생성한다.
-+ 사용하고 있는 IDE에 따른 lombok구성도 필요로 한다. ide 이름 + lombok으로 검색하면 상세히 나온 사이트가 아주 많다.
-+ 프로젝트의 build.gradle에 아래 dependency를 추가한다. hibernate, security 구성에 그냥저냥 기본적인 구성들이다.
++ Spring Boot Project를 생성한다. Build툴은 Gradle을 선택한다.
++ 사용하고 있는 IDE에 따른 lombok구성을 한다. lombok 설치법은 IDE마다 달라 여기서 그 방법을 적긴 힘들다. 하지만 인터넷에서 ide 이름 + lombok으로 검색하면 상세히 나온 사이트가 아주 많다.
++ 프로젝트의 build.gradle에 아래 dependency를 추가한다. hibernate, security 구성과 추가적인 기본 구성요소들이다.
 ```
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
@@ -55,8 +55,7 @@
 ```
 
 #### 2. DB 생성 및 properties값 추가
-+ 예제는 mysql은 local에 위치하며 db이름은 testdb로 만든 것을 전제로 진행한다. 생성된 저장소에 따로 더 설정할 건 없다.
-
++ 예제는 mysql은 local에 위치하며 db이름은 testdb로 만든 것을 전제로 진행한다. DB 자체에서 추가로 설정할 건 없다.
 + 아래 내용을 src/main/resources의 application.properties에 추가하면 되는데.....
 + 예제를 작성하는 과정에서 오류가 발생했다. SSL과 관련된 부분인데 SSL을 false로 설정해 임시로 오류를 해결했다. 이에 나중에 이 문제를 해결하려면 기록이 필요할 것 같아 오류 해결 과정 로그를 남긴다.
 ```
@@ -142,9 +141,9 @@ public class cmBasicappController {
 </body>
 </html>
 ```
-+ 여기서 input name으로 설정된 j_usermname, j_password는 시큐리티가 id, password를 구분하도록 지어준 필드명이다.
-+ submit을 누를 경우, 데이터는 post 메시지로 backend의 /logindata 경로로 가도록 작성했다. form 태그의 기능이기에 저렇게만 작성해줘도 동작한다. 
-+ static 폴더 안에 main 폴더를 만들고 main.html을 만들어준다. main.html은 별다른 기능이 없어도 좋다.
++ 여기서 input name으로 설정된 j_usermname, j_password는 시큐리티는 id, password를 구분하도록 지어준 필드명이다. backend에서 이름만 통일해준다면 어떤 이름이 되어도 상관없다.
++ submit을 누를 경우, 데이터는 post 메시지로 backend의 /logindata 경로로 가도록 작성했다. 이는 form 태그의 기능이기에 위 코드와 같이 간단하게만 구현해줘도 정상적으로 동작한다. 
++ static 폴더 안에 main 폴더를 만들고 main.html을 만들어준다. 이번 예제에선 main.html은 별다른 기능이 없어도 좋다.
 ```
 <!DOCTYPE html>
 <html>
@@ -159,9 +158,8 @@ public class cmBasicappController {
 ```
 
 #### 4. SecurityConfig 구성
-+ Spring Security에선 http인증과 form 인증을 제공한다. 우린 form 인증을 기본으로 잡고간다.
-+ 우선 Security의 기본 로그인 기능을 직접 구현한 loginpage로 대체할 예정이다.
-
++ Spring Security에선 http인증과 form 인증을 제공한다. 이번 예제에선 form 인증을 구현한다.
++ 우선 Security의 기본 로그인 기능으로 출력되는 loginpage를 직접 구현한 loginpage로 대체할 예정이다.
 + 아래와 같은 SecurityConfig를 생성한다.
 ```
 @Configuration
@@ -203,11 +201,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 ```
 
 + 해당 내용을 모두 적용하고 application을 동작시킨 뒤 localhost:8080으로 접속하면 아래와 같은 변화가 생긴다.
-    * loginpage 설정이 적용되면서 시큐리티의 기본 제공 로그인이 안 뜸.
-    * 접근 설정이 모든 경로에 permitAll로 되어있기에 로그인 페이지 출력없이 루트경로인 메인페이지로 바로 가버림.
+    * loginpage 설정이 적용되면서 시큐리티의 기본 제공 로그인 페이지가 더는 출력되지 않음.
+    * 그러나 접근 설정이 모든 경로에 permitAll로 되어있기에 로그인 페이지 출력없이 루트경로인 메인페이지로 바로 가버림.
++ 로그인을 적용하기 위해서는 직접 만든 로그인 페이지를 디폴트 로그인페이지로 설정해야한다. 본격적인 로그인 적용 전에 우선은 로그인에 사용할 계정을 만들자.
 
 #### 5. UserEntity를 만들어야 한다.
-+ Role은 보통 별도의 enum table로 분리해서 관리하지만 지금은 예제다. 예제 특성상 사용했던 테이블을 나중엔 지워야하고 지우기에는 Role을 같은 테이블에 두는 쪽이 편하다. 그러니 Role은 그냥 String 값으로 한다. Role을 별도 테이블로 관리하는 방법은 추후에 다룬다.
++ Role은 보통 별도의 enum table로 분리해서 관리하지만 지금은 예제다. 예제 특성상 사용했던 테이블은 나중에 지워야하고 지우기에는 Role을 같은 테이블에 두는 쪽이 편하다. 그러니 Role은 그냥 String 값으로 한다. Role을 별도 테이블로 관리하는 방법은 추후에 다룬다.
 + Hibernate를 통한 자동 Table 생성을 위해 아래 한 줄을 application.properties에 추가한다.
 ```
 #--------------------------------------------------
