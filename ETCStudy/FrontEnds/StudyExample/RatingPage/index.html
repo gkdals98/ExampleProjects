@@ -1,0 +1,259 @@
+<html>
+    <head>
+        <!--<link rel="icon" href="src/assets/yinyang.ico" type="image/x-icon">-->
+        <meta charset="utf-8">
+        <meta name="og:site_name" content="Character Sorting">
+        <meta name="og:description" content="A simple website for sorting Touhou characters in a formatted list.">
+        <meta name="og:image" content="https://i.imgur.com/IZzJMk6.jpg">
+        <title>Sorting</title>
+
+        <!--jquery는 항상 부트스트렙보다 먼저 선언되어야 한다.-->
+        <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+        <script src="star-rating.min.js"></script>
+
+        
+        <link rel="stylesheet" href="main.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.js">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+        <script src="https://unpkg.com/vue@2.5.17/dist/vue.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.js"></script>
+        <script src="https://unpkg.com/vuex@3.0.1/dist/vuex.js"></script>
+    </head>
+    <body>
+        <div>
+            <div id="rating-main" class="card card-container container">
+                
+                <!--Start Page-->
+                <div id="rating-list-component">
+                    <img v-bind:src="img" width="100%">
+                    <input type="text" v-model="newRatingItem" v-on:keyup.enter="addNewRatingItem" placeholder="Rating 항목 입력">
+                    <ul class="list-group" width="100%">
+                        <li
+                            is="rating-item"
+                            v-for="(rating, index) in rating_items"
+                            v-bind:title="rating.title"
+                            v-on:remove="removeRatingItem(index);"
+                        ></li>
+                    </ul>
+                    <div>
+                        <label for="primary" class="btn btn-primary">FutureHouse<input type="checkbox" id="primary" class="badgebox" v-model="future_house"><span class="badge">&check;</span></label>
+                        <label for="info" class="btn btn-info">DnB<input type="checkbox" id="info" class="badgebox" v-model="dnb"><span class="badge">&check;</span></label>
+                        <label for="success" class="btn btn-success">Trance<input type="checkbox" id="success" class="badgebox" v-model="trance"><span class="badge">&check;</span></label>
+                        <label for="warning" class="btn btn-warning">Bigroom<input type="checkbox" id="warning" class="badgebox" v-model="bigroom"><span class="badge">&check;</span></label>
+                    </div>
+                    
+                    <button class="btn btn-lg btn-primary btn-block" v-on:click="saveRatingItems">Start</button>
+                </div>
+                
+                <!--Rating Page-->
+                <div id="rating-component" >
+                    <img v-bind:src="img" width="100%">
+                    <h1 width="100%">{{name}}</h1>
+                    <ul class="list-group" width="100%">
+                        <li
+                            is="rating"
+                            v-for="(data, index) in data_items"
+                            v-bind:title="data.title"
+                            v-bind:rate="data.rate"
+                            v-bind:index=index
+                            @send-rating="setRating"
+                        ></li>
+                    </ul>
+                    <button class="btn btn-lg btn-primary btn-block" v-on:click="moveNext">Next</button>
+                </div>
+            </div>
+            
+            <!-- 추후 Display none으로 변경 -->
+            <div id="rating-result" display="none">
+                
+            </div>
+        </div>
+    </body>
+    
+    <script>
+        //채크박스 버튼 레퍼런스
+        //https://bootsnipp.com/snippets/featured/badgebox-css-checkbox-badge
+        
+        Vue.component('star-rating', VueStarRating.default);
+        
+        var bus = new Vue();
+        
+        const current_data = new Vuex.Store({
+            state: {
+                name : 'Avicii',
+                img : 'Avicii.jpg',
+                rating_data : [
+                    {
+                        title : 'Popularity',
+                        rate : 3
+                    },
+                    
+                    {
+                        title : 'live',
+                        rate : 3
+                    }
+                ]
+            },
+            mutations: {
+                add_item(state, item){
+                    state.rating_data.push(item);
+                },
+                remove_item(state, index){
+                    state.rating_data.splice(index, 1);
+                },
+                
+                set_default_rate(state){
+                    for(var i = 0; i < state.rating_data.length; i++){
+                        state.rating_data[i].rate = 3;
+                    }
+                },
+                set_rating(state, rating_info){
+                    state.rating_data[rating_info.index].rate = rating_info.rate;
+                },
+                
+                set_name(state, name){
+                    state.name = name;
+                },
+                
+                set_imange(state, img){
+                    state.img = img;
+                },
+            },
+            getters: {
+            }
+        })
+        
+        //Common
+        
+        //Starting.js
+        Vue.component('rating-item', {
+             template: '\
+                <li class="list-group-item d-flex justify-content-between align-items-center">\
+                    {{title}}<span class="badge" v-on:click="$emit(\'remove\')"><i style="font-size:15px;color:pink;" class="fas fa-minus-square"></i></span>\
+                </li>\
+            ',
+            props: ['title']    //부모 컴포넌트로부터 title 데이터를 받아옴.
+        })
+        
+        new Vue({
+            el: '#rating-list-component',
+            data: function(){
+                return {
+                    img: current_data.state.img,
+                    newRatingItem: '',
+                    rating_items: current_data.state.rating_data,
+                    future_house: false,
+                    dnb: false,
+                    trance: false,
+                    bigroom: false
+                }
+            },
+            methods: {
+                addNewRatingItem: function () {
+                    if(this.rating_items.length > 8){
+                        alert('최대 입력 항목은 9개입니다.');
+                        return;
+                    }
+                    if(this.newRatingItem == ''){
+                        alert('값을 입력해주세요!');
+                        return;
+                    }
+                    if(this.newRatingItem.length > 20){
+                        alert('20자 이하만 입력 가능합니다.');
+                        return;
+                    }
+                    this.rating_items.push({
+                        title: this.newRatingItem,
+                        rate : 3
+                    })
+                    this.newRatingItem = ''
+                },
+                
+                removeRatingItem:function(index){
+                    current_data.commit('remove_item',index);
+                },
+                
+                saveRatingItems: function(){
+                    if(this.rating_items.length < 1){
+                        alert('최소 하나의 평가 항목이 들어가야합니다!');
+                        return;
+                    }
+                    if(this.future_house===false && this.dnb===false && this.trance===false && this.bigroom===false){
+                        alert('최소 하나의 장르를 선택해야합니다!');
+                        return;
+                    }
+                    for(var count in this.rating_items){
+                        with(this.rating_items[count]){
+                            //여기서는 뭐냐 그aaa
+                            console.log(title);
+                        }
+                    }
+                }
+            }
+        })
+        
+        //Rating.js
+        Vue.component('rating', {
+            template : '\
+                <li class="list-group-item d-flex justify-content-between">\
+                    {{title}}\
+                    <star-rating :glow="5" :rounded-corners="true" :increment="0.5" inactive-color="#e1bad9" active-color="#cc1166" :star-size="25" :inline="true" class="pull-right"\
+                        :star-points="[23,2, 14,17, 0,19, 10,34, 7,50, 23,43, 38,50, 36,34, 46,19, 31,17]" :show-rating="false" v-bind:rating="rate" @rating-selected="sendRating"></star-rating>\
+                </li>\
+            ',
+            props: {
+                title : String,
+                rate : Number,
+                index : Number
+            },
+            methods:{
+                sendRating : function (rate){
+                    this.$emit('send-rating', rate, this.index)
+                }          
+            }
+        })
+        
+        new Vue({
+            el: '#rating-component',
+            data: function(){
+                return{
+                    name : current_data.state.name,
+                    img: current_data.state.img,
+                    data_items : current_data.state.rating_data
+                }
+            },
+            methods: {
+                setRating: function(rate, index) {
+                    current_data.commit('set_rating', {'index' : index, 'rate' : rate});
+                },
+                
+                moveNext : function(){
+                    //result 컴포넌트에 Data 전달
+                    bus.$emit('move-next');
+                    //Rating을 기본 값으로 변경.
+                    current_data.commit('set_default_rate');
+                }
+            }
+        });
+        
+        
+        new Vue({
+            el: '#rating-result',
+            data: function(){
+                return{
+                    
+                }
+            },
+            created:function(){
+                bus.$on('move-next', function(){
+                    console.log(data);
+                })
+            }
+        });
+        
+    </script>
+</html>

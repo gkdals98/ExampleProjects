@@ -33,7 +33,7 @@ C:\Users\~\vueclitest>vue init webpack my-project
 ? Use ESLint to lint your code? No      #ESLint. 코드 유지보수성 향상을 위한 문법 채크 툴 Linter의 일종.
 ? Pick an ESLint preset Standard
 ? Set up unit tests No                  #https://kr.vuejs.org/v2/guide/unit-testing.html - 유닛 단위(vue에선 싱글 파일 컴포넌트) 테스트 작성.
-? Pick a test runner karma              #공식 문서에 karma를 가이드하고있으니 우선 karma and mocha를 선택.
+? Pick a test runner karma              #Yes를 선택했다면 여러 도구들을 안내해주는데 공식 문서에 karma를 가이드하고있으니 karma and mocha를 선택하자. 지금은 NO다.
 ? Setup e2e tests with Nightwatch? No   #전체 시스템 동작 테스트. 시나리오, 기능, 통합적인 기타 등등을 테스트한다.
 ? Should we run `npm install` for you after the project has been created? (recommended) npm         #init은 npm을 선택해줌.
 
@@ -90,9 +90,28 @@ C:\Users\~\vueclitest\my-project>npm run dev
 + 위와 같은 구성이 완료되면 http://localhost:8080을 통해 개발중인 페이지에 접근할 수 있다.
 + 핫리로드가 적용된다. vue파일의 변경사항을 저장하면 저장하는대로 페이지가 바로 리로드된다.
 + 개발모드 종료는 nodejs 실행중인 cmd에서 ctrl + c로. 종료하시겠습니까? 라는 문구가 나오면 Y를 입력하면 된다.
-+ 추가로 우리가 쓸만한 프로젝트 초기 구성은 아래와 같다.
++ 추가로 우리가 쓸만한 프로젝트 초기 구성 명령은 아래와 같다.
     * vue init webpack-simple : dev서버를 돌릴 수 있는 최소한의 webpack 프로젝트
     * vue init simple : vue 최소 기능만 들어간 html 파일 1개 생성
++ 아래는 cli로 프로젝트 생성하면 나오는 가이드.
+``` bash
+# install dependencies
+npm install
+
+# serve with hot reload at localhost:8080
+npm run dev
+
+# build for production with minification
+npm run build
+
+# build for production and view the bundle analyzer report
+npm run build --report
+
+For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+```
++ **근데**.... 커밋은 어디까지 해야하는거지....? 우선 최소한의 파일만 커밋해볼까 아니면.... 아니면 node_modules 폴더 빼고 진짜 다 커밋해야하나... 내 생각엔 다 하는게 맞는듯...
+
+
 
 #### Vuex
 + https://vuex.vuejs.org/kr/
@@ -138,7 +157,7 @@ npm install
 npm run build
 ```
 #### Vuetify
-
++ 비유하자면 vue 용 부트스트랩인데... 내가 쓸 일은 없을 것 같긴 한데...
 #### awesome-vue
 
 ### 2. Vue PKG의 구성
@@ -150,4 +169,5 @@ npm run build
     * src : 실제 개발이 이루어지는 장소. 들어가보면 entry가 될 main.js와 root 컴포넌트인 App.vue, 그리고 리소스를 넣는 assets 폴더와 Hello World 코드가 들어가있는 HelloWorld.vue가 있다.
     * static : 이건 어디다 쓰는 폴더일까... gitkeep 파일 하나가 전부다. 
 + 요약하자면 개발을 위해서는 src 폴더를, 빌드 및 기타 설정을 위해서는 build 폴더와 config 폴더를 확인하면 된다.
++ 구조상 npm install ~ --save-dev 로 설치하면
 + 

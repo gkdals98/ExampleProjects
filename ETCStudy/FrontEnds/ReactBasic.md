@@ -370,7 +370,7 @@ componentDidUpdate(prevProps, prevState, snapshot){
 + https://medium.com/@benjaminwoojang/webpack-4%EC%99%80-babel-7%EC%9C%BC%EB%A1%9C-react%EA%B0%9C%EB%B0%9C%ED%99%98%EA%B2%BD-%EC%85%8B%EC%97%85%ED%95%98%EA%B8%B0-340e00d2760b
 
 #### ReactDOM 
-+ Webpack dev server 관련 이야기같은데 react-dom을 npm으로 가져와야 React로 만들어진 DOM과 가상 DOM을 실제 DOM에 렌더링 할 수 있다고 함.
++ Webpack dev server 핫리로드랑 관련된 이야기같은데 react-dom을 npm으로 가져와야 React로 만들어진 DOM과 가상 DOM을 실제 DOM에 렌더링 할 수 있다고 함.
 ```
 >> npm install react react-dom
 ```
