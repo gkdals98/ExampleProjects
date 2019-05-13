@@ -26,10 +26,42 @@
 + **크기 속성**
 + **색상, 효과**
 
+### 3. SCSS 문법
++ import, extend, mixin 관련 - http://megaton111.cafe24.com/2017/01/13/sass-%EB%AC%B8%EB%B2%95-%EB%B6%88%EB%9F%AC%EC%98%A4%EA%B8%B0import-%EC%83%81%EC%86%8Dextend-%EB%AF%B9%EC%8A%A4%EC%9D%B8mixin/
++ **주석**
+```
+//주석 1. 컴파일 됨.
+/*주석 2. CSS로 컴파일 하는 순간 사라짐.*/
+```
++ **Mixins** : 믹스인. 특정 CSS 효과를 재사용하고 싶을 때 템플릿화하는 방법을 의미한다. SCSS의 믹스인 정의와 사용은 아래와 같다.
+```
+//정의할 때
+@mixin main-style { 
+    //코드
+}
 
-### 3. 좋은 템플릿들
+//사용할 때
+div #app{
+    @include main-style
+}
+```
++ **Mixins Methods** : 믹스인으로 정의된 Method. 인자를 전달받아 적용할 수 있으며 기본값 설정도 가능하다.
+```
+//정의할 때
+@mixin main-style( $width : 120px, $height ) { 
+    //코드
+}
+
+//사용할 때
+div #app{
+    @include main-style( );
+}
+```
+### 4. 좋은 템플릿들
 + http://rwdb.kr/freesource/ - 온갖 무료 리소스들이 있는 사이트. 
 + http://rwdb.kr/button_10/ - 위 사이트 들어갈 때 본 정말 마음에 드는 버튼 모음.
 + http://rwdb.kr/fonts/ - 위 사이트의 무료 폰트 모음인데 개중에는 상업 이용도 가능한 것들도 있다.
 + https://www.bestcssbuttongenerator.com/#/1 - 버튼 CSS 생성하는건데.... 대충 어떤 느낌으로 제작하는지 감 잡기에 좋을 것 같은데.
 + https://codepen.io/collection/ABNwxq/5/ - 백그라운드 이펙트 모음.
+
+
