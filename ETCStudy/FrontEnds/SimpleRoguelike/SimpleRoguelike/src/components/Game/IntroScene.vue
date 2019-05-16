@@ -1,29 +1,27 @@
 <template>
-  <div id="frame">
-    <h1>{{messageText}}</h1>
+  <div id="intro-scene">
+    <h1>Now, It's time to Down to the Dungeon....</h1>
     <button v-on:click="startButtonClicked">- Ok, Let's Go.. -</button>
   </div>
 </template>
 
 <script>
 export default {
-  name : 'Controller',
+  name : 'IntroScene',
   data : function(){
     return{
-      messageText : "Now, It's time to Down to the Dungeon...."
     }
   },
   methods:{
     startButtonClicked : function(){
-      this.$emit('end')
+      this.$emit('start-game')
     }
   }
 }
 </script>
-
 <style scoped lang="scss">
-@import "../common/css/fadein";
-#frame {
+@import "../../common/css/fadein";
+#intro-scene {
   color : #d7dce2;
   margin-left: auto;
   margin-right: auto;
@@ -33,6 +31,7 @@ export default {
   width: 800px;
   height: 500px;
   button {
+    animation: 2.5s fadeInwithdelay;
     background-color: Transparent;
     background-repeat:no-repeat;
     border : none;

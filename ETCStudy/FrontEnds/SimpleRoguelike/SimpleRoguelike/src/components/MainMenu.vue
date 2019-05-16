@@ -1,5 +1,5 @@
 <template>
-  <div id="frame">
+  <div id="main-menu">
     <h1>{{title}}</h1>
     <button v-on:click="startButtonClicked">Start</button>
   </div>
@@ -22,7 +22,7 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-#frame {
+#main-menu {
   color : #1c6cff;
   margin-left: auto;
   margin-right: auto;

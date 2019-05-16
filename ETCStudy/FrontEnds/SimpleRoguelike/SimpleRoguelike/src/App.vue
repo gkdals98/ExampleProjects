@@ -1,19 +1,20 @@
 <template>
   <div id="app">
     <Main v-if="game===false" @start="gameStart"/>
-    <Controller v-if="game===true" @end="gameEnd" display="none"/>
+    <IntroScene v-if="game===true" @start-game="gameStartClicked"/>
+    <IntroScene v-if="game===true" @start-game="gameStartClicked"/>
   </div>
 </template>
 
 <script>
-import Main from './components/MainMenu'
-import Controller from './components/GameControllFrame'
+import Main from "./components/MainMenu"
+import IntroScene from "./components/Game/IntroScene"
 
 export default {
   name: 'App',
   components: {
     Main,
-    Controller
+    IntroScene
   },
   data : function(){
     return {
@@ -22,12 +23,10 @@ export default {
   },
   methods: {
     gameStart : function(){
-      this.game = true
-      console.log("message start emited")
+      this.game = true;
     },
-    gameEnd : function(isCleaer){
-      this.game = false
-      console.log("message game end emited")
+    gameStartClicked : function(){
+      this.game = false;
     }
   }
 }
