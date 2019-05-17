@@ -1,7 +1,7 @@
 <template>
   <div id="intro-scene">
-    <h1>Now, It's time to Down to the Dungeon....</h1>
-    <button v-on:click="startButtonClicked">- Ok, Let's Go.. -</button>
+    <h1>Down to the Dungeon...</h1>
+    <button v-on:click="startButtonClicked">- Ok. -</button>
   </div>
 </template>
 
@@ -23,13 +23,10 @@ export default {
 @import "../../common/css/fadein";
 #intro-scene {
   color : #d7dce2;
-  margin-left: auto;
-  margin-right: auto;
-  padding-top: 80px;
   background-color : #253349;
   font-size: 40px;
-  width: 800px;
-  height: 500px;
+  padding-top: 80px;
+  height: 100%;
   button {
     animation: 2.5s fadeInwithdelay;
     background-color: Transparent;

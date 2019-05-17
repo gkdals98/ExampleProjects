@@ -1,13 +1,12 @@
 <template>
   <div id="frame">
-    <h1>{{title}}</h1>
-    <button v-on:click="startButtonClicked">Start</button>
+    <button v-on:click="startButtonClicked">Lets Go</button>
   </div>
 </template>
 
 <script>
 export default {
-  name : 'Gacha',
+  name : 'GachaScene',
   data : function(){
     return{
     }
@@ -25,7 +24,7 @@ export default {
   margin-left: auto;
   margin-right: auto;
   padding-top: 80px;
-  background-color : #dbe8ff;
+  background-color : #333333;
   font-size: 50px;
   width: 800px;
   height: 500px;

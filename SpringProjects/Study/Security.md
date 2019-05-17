@@ -424,6 +424,7 @@ spring.jpa.hibernate.naming.physical-strategy=org.hibernate.boot.model.naming.Ph
 + 아래쪽은 추후 참고할 링크들
 https://spring.io/guides/topicals/spring-security-architecture
 https://m.blog.naver.com/kimnx9006/220638156019
+https://www.slideshare.net/madvirus/ss-36809454
 
 + authenticationManager
 

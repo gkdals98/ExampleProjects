@@ -24,13 +24,10 @@ export default {
 <style scoped lang="scss">
 #main-menu {
   color : #1c6cff;
-  margin-left: auto;
-  margin-right: auto;
-  padding-top: 80px;
   background-color : #dbe8ff;
   font-size: 50px;
-  width: 800px;
-  height: 500px;
+  padding-top: 80px;
+  height: 100%;
   button {
     margin-bottom: 20px;
     background-color : #002e82;
