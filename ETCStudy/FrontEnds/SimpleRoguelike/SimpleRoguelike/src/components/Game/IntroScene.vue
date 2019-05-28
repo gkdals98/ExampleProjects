@@ -28,7 +28,6 @@ export default {
   padding-top: 80px;
   height: 100%;
   button {
-    animation: 2.5s fadeInwithdelay;
     background-color: Transparent;
     background-repeat:no-repeat;
     border : none;

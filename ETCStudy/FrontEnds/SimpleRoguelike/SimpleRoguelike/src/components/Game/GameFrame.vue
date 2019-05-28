@@ -1,29 +1,27 @@
 <template>
   <div id="game">
     <IntroScene v-if="current_scene===0" @start-game="sceneGachaSet"/>
-    <GachaScene v-if="current_scene===1" @settingEnd="sceneBattleSet"/>
-    <BattleScene v-if="current_scene===2" @settingEnd="CharSettingEnd"/>
+    <GachaScene v-if="current_scene===1" @settingEnd="scenePlaySet"/>
+    <StageScene v-if="current_scene===2" @stageEnd="stageEnd"/>
   </div>
 </template>
 
 <script>
 import IntroScene from "./IntroScene"
 import GachaScene from "./GachaScene/GachaScene"
-import BattleScene from "./BattleScene/BattleScene"
+import StageScene from "./StageScene/StageScene"
+import ResultScene from "./ResultScene/ResultScene"
 
 const INTRO = 0
 const GACHA = 1
-const BATTLE = 2
-const EVENT = 3
-const CLEAR = 4
-const GAMEOVER = 5
+const STAGE = 2
 
 export default {
   name : 'GameFrame',
   components: {
     IntroScene,
     GachaScene,
-    BattleScene
+    StageScene
   },
   data : function(){
     return{
@@ -34,8 +32,11 @@ export default {
     sceneGachaSet : function(){
       this.current_scene = GACHA;
     },
-    sceneBattleSet : function(){
-      this.current_scene = BATTLE;
+    scenePlaySet : function(){
+      this.current_scene = STAGE;
+    },
+    stageEnd : function(result){
+
     }
   }
 }

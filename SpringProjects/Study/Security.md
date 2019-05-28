@@ -420,6 +420,11 @@ spring.jpa.hibernate.naming.physical-strategy=org.hibernate.boot.model.naming.Ph
 **우선 여기까지, Spring Security 무작정 따라하기 예제를 마친다.**
 
 
+## Session
++ 스프링의 공식 세션 가이드 - https://docs.spring.io/spring-session/docs/current/reference/html5/
+
+
+
 ## Architecture
 + 아래쪽은 추후 참고할 링크들
 https://spring.io/guides/topicals/spring-security-architecture

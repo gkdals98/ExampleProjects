@@ -25,6 +25,7 @@
     * **padding-top, padding-left, padding-right, padding-bottom** : 
 + **크기 속성**
 + **색상, 효과**
+    * **border-radius: 10px 10px 10px 10px / 10px 10px 10px 10px** : 모서리를 둥글게 만드는 방법.
 
 ### 3. SCSS 문법
 + import, extend, mixin 관련 - http://megaton111.cafe24.com/2017/01/13/sass-%EB%AC%B8%EB%B2%95-%EB%B6%88%EB%9F%AC%EC%98%A4%EA%B8%B0import-%EC%83%81%EC%86%8Dextend-%EB%AF%B9%EC%8A%A4%EC%9D%B8mixin/
