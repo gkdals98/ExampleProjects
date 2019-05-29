@@ -1,6 +1,6 @@
 <template>
   <div id="gacha_panel">
-    <GachaMain v-if="current_panel===0" @start-game="sceneGachaSet"/>
+    <GachaMain v-if="current_panel===0" @start_gacha="resultSet"/>
     <GachaResult v-if="current_panel===1" @settingEnd="scenePlaySet"/>
   </div>
 </template>

@@ -22,10 +22,10 @@ export default {
 <style scoped lang="scss">
 @import "../../common/css/fadein";
 #intro-scene {
+  padding-top: 10px;
   color : #d7dce2;
   background-color : #253349;
   font-size: 40px;
-  padding-top: 80px;
   height: 100%;
   button {
     background-color: Transparent;
@@ -33,7 +33,6 @@ export default {
     border : none;
     overflow: hidden;
     outline:none;
-    margin-bottom: 20px;
     font-size: 20px;
     color : #FFFFFF;
     width: 170px;

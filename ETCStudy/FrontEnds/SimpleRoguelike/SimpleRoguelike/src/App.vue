@@ -31,7 +31,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped lang="scss">
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -41,6 +41,8 @@ export default {
   margin-left: auto;
   margin-right: auto;
   width: 800px;
+  min-height: 500px;
   height: 500px;
+  max-height: 500px;
 }
 </style>

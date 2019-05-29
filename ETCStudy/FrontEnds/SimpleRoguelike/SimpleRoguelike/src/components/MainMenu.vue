@@ -23,13 +23,12 @@ export default {
 </script>
 <style scoped lang="scss">
 #main-menu {
+  padding-top: 10px;
   color : #1c6cff;
   background-color : #dbe8ff;
   font-size: 50px;
-  padding-top: 80px;
   height: 100%;
   button {
-    margin-bottom: 20px;
     background-color : #002e82;
     font-size: 20px;
     color : #FFFFFF;

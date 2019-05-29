@@ -1,5 +1,5 @@
 <template>
-  <div id="ghacha_scene">
+  <div id="gacha_scene">
     <GachaPanel @tryGacha="tryGacha" @selectCharacter="selectCharacter"/>
     <PartyPanel @settingEnd=""/>
   </div>
@@ -30,12 +30,10 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-#ghacha_scene {
-  margin-left: auto;
-  margin-right: auto;
+@import "../../../common/css/size-template";
+#gacha_scene {
+  height: 100%;
   padding-top: 10px;
   background-color : #333333;
-  width: 800px;
-  height: 500px;
 }
 </style>
