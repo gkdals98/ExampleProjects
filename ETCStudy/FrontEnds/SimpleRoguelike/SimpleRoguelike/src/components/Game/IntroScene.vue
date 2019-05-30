@@ -39,6 +39,7 @@ export default {
     height: 50px;
   }
   h1{
+    margin-top: 150px;
     animation: fadein 2s;
     -moz-animation: fadein 2s; /* Firefox */
     -webkit-animation: fadein 2s; /* Safari and Chrome */

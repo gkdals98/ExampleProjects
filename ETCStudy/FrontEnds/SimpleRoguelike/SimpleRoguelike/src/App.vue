@@ -40,9 +40,8 @@ export default {
   color: #2c3e50;
   margin-left: auto;
   margin-right: auto;
+  margin-top : 0px;
   width: 800px;
-  min-height: 500px;
-  height: 500px;
-  max-height: 500px;
+  height: 550px;
 }
 </style>

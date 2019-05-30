@@ -1,19 +1,14 @@
 <template>
-  <div id="party_panel">
-  </div>
+  <span id="gacha_char_panel">
+  </span>
 </template>
 
 <script>
-import GachaCharPanel from "./GachaCharPanel";
-
 export default {
-  name : 'PartyPanel',
+  name : 'GachaCharPanel',
   data : function(){
     return{
     }
-  },
-  components: {
-    GachaCharPanel,
   },
   methods:{
     startButtonClicked : function(){
@@ -23,10 +18,10 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-#party_panel {
+#gacha_char_panel {
   background-color : #879ab7;
-  width: 800px;
-  height: 130px;
+  width: 120px;
+  height: 120px;
 	border-radius: 10px 10px 10px 10px / 10px 10px 10px 10px;
 }
 </style>

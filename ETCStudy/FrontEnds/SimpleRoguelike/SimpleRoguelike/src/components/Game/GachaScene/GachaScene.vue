@@ -1,6 +1,6 @@
 <template>
   <div id="gacha_scene">
-    <GachaPanel @tryGacha="tryGacha" @selectCharacter="selectCharacter"/>
+    <GachaPanel @tryGacha="tryGacha" @selectCharacter="selectCharacter" v-bind:jwel="jwel"/>
     <PartyPanel @settingEnd=""/>
   </div>
 </template>
@@ -17,14 +17,13 @@ export default {
   },
   data : function(){
     return{
+      jwel : 5
     }
   },
   methods:{
     tryGacha : function(){
-      this.$emit('start')
     },
     selectCharacter : function(){
-      this.$emit('start')
     }
   }
 }
@@ -34,6 +33,6 @@ export default {
 #gacha_scene {
   height: 100%;
   padding-top: 10px;
-  background-color : #333333;
+  background-color : #000000;
 }
 </style>

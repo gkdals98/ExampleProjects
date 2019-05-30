@@ -28,7 +28,14 @@ export default {
   background-color : #dbe8ff;
   font-size: 50px;
   height: 100%;
+  h1{
+    margin-top: 150px;
+  }
   button {
+    border-radius: 10px;
+    border-style: none;
+    margin-left: auto;
+    margin-right: auto;
     background-color : #002e82;
     font-size: 20px;
     color : #FFFFFF;
