@@ -12,20 +12,20 @@ export default {
   name : 'GachaMain',
   data : function(){
     return{
-      defjwel: this.jwel
+      defjewel: this.jewel
     }
   },
   props:[
-    'jwel',
+    'jewel',
   ],
   methods:{
     singlegachaButtonClicked : function(){
-      if(this.defjwel < 1){
+      if(this.defjewel < 1){
       }
       this.$emit('single')
     },
     fivegachaButtonClicked : function(){
-      if(this.defjwel < 5){
+      if(this.defjewel < 5){
       }
       this.$emit('five')
     }

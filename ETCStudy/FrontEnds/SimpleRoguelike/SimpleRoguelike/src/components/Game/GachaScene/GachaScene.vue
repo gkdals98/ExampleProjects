@@ -1,6 +1,6 @@
 <template>
   <div id="gacha_scene">
-    <GachaPanel @tryGacha="tryGacha" @selectCharacter="selectCharacter" v-bind:jwel="jwel"/>
+    <GachaPanel @tryGacha="tryGacha" @selectCharacter="selectCharacter" v-bind:jewel="jewel"/>
     <PartyPanel @settingEnd=""/>
   </div>
 </template>
@@ -17,7 +17,7 @@ export default {
   },
   data : function(){
     return{
-      jwel : 5
+      jewel : 5
     }
   },
   methods:{

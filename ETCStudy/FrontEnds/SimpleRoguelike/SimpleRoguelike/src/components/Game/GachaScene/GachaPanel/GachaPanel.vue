@@ -1,7 +1,7 @@
 <template>
   <div id="gacha_panel">
-    <GachaMain v-if="current_panel===0" @single="trysingle" @five="tryfive" v-bind:jwel="jwel"/>
-    <GachaResult v-if="current_panel===1" @settingEnd="scenePlaySet" v-bind:jwel="jwel"/>
+    <GachaMain v-if="current_panel===0" @single="trysingle" @five="tryfive" v-bind:jewel="jewel"/>
+    <GachaResult v-if="current_panel===1" @settingEnd="scenePlaySet" v-bind:jewel="jewel"/>
   </div>
 </template>
 
@@ -16,12 +16,12 @@ export default {
   name : 'GachaPanel',
   data : function(){
     return{
-      defjwel: this.jwel,
+      defjewel: this.jewel,
       current_panel : MAIN
     }
   },
   props:[
-    'jwel',
+    'jewel',
   ],
   components: {
       GachaMain,
