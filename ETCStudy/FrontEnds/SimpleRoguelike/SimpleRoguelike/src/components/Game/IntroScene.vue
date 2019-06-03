@@ -22,6 +22,7 @@ export default {
 <style scoped lang="scss">
 @import "../../common/css/fadein";
 #intro-scene {
+  text-align: center;
   padding-top: 10px;
   color : #d7dce2;
   background-color : #253349;

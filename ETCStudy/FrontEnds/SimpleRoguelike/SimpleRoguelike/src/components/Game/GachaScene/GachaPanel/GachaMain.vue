@@ -40,7 +40,7 @@ export default {
   #gacha-buttons{
     height: 80px;
     width : 300px;
-    padding-left: 450px;
+    padding-left: 480px;
     padding-top: 310px;
     button{
 	     font-family:Arial;

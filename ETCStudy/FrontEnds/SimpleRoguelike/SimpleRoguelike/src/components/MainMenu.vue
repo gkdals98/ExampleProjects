@@ -23,6 +23,7 @@ export default {
 </script>
 <style scoped lang="scss">
 #main-menu {
+  text-align: center;
   padding-top: 10px;
   color : #1c6cff;
   background-color : #dbe8ff;

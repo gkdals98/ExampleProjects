@@ -142,6 +142,9 @@
 + 지금 구조에선 어째 2단 프롭 같다. 같은게 아니라 맞네..... 2단만이 아니네요 그리고. 컴포넌트 안에 컴포넌트 안에 컴포넌트 안에 컴포넌트 머 이런식으로 되어있어요.
 + 컴포넌트 안에 컴포넌트를 넣을 때 상위 컴포넌트에서 할 수 있나 고민해보자. 솔직히 Scene에 코드 분리하고 싶은건 사실이라 2단 프롭까지는 참아줄만 하다고 본다.
 + 돈이 읎어서 가챠가 불가능할 시 버튼을 비활성하려 합니다. 이거도 좀 생각하시고.
+
++ 어디 전역으로 참고할 Data객체가 있었으면 하는데.
++ 플레이어 데이터나 스테이지같은건 어디서든 참조가능해야하니까...
 ------
 ## 참고할 자료들
 + css에서 버튼 위치 absolute로 잡기 - https://stackoverflow.com/questions/18640503/how-to-position-the-button-exactly-in-css
@@ -149,3 +152,4 @@
 + 이건 우리랑은 상관없겠다만 규모가 큰 프로젝트용 Boilerplate - https://github.com/yamoo9/vue-full/blob/master/docs/README.md
 + Flex로 레이아웃을 만들어보자. - https://poiemaweb.com/css3-flexbox
 + 여러 애니메이션. 나중에 버튼같은데 적용하면 좋을 것 같은게 꽤 보임. - http://rwdb.kr/interestedeffects/
++ zoom in. 반대로 하면 zoom out이지. - https://www.youtube.com/watch?v=EHmoLmYQ480
