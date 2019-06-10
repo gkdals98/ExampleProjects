@@ -24,7 +24,7 @@ export default {
 #intro-scene {
   text-align: center;
   padding-top: 10px;
-  color : #d7dce2;
+  color : #4984c6;
   background-color : #253349;
   font-size: 40px;
   height: 100%;

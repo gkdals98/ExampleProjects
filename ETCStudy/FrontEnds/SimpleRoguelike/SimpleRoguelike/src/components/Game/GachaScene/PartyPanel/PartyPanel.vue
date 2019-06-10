@@ -45,6 +45,7 @@ export default {
     padding-left: 5px;
     padding-top: 5px;
     #next_button{
+      color : #003777;
       font-size: 40px;
       width: 160px;
       height: 120px;

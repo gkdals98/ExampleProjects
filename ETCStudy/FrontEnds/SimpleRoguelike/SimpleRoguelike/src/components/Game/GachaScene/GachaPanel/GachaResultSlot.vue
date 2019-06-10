@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name : 'GachaCharPanel',
+  name : 'GachaResultSlot',
   data : function(){
     return{
     }
@@ -24,9 +24,9 @@ export default {
 <style scoped lang="scss">
 button {
   font-size: 40px;
-  background-color : #98f3ae;
-  width: 120px;
-  height: 120px;
+  background-color : #3d3d3d;
+  width: 150px;
+  height: 270px;
 	border-radius: 10px 10px 10px 10px / 10px 10px 10px 10px;
 }
 </style>

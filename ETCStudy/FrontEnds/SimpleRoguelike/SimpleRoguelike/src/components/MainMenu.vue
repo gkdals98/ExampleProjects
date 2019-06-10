@@ -25,8 +25,8 @@ export default {
 #main-menu {
   text-align: center;
   padding-top: 10px;
-  color : #1c6cff;
-  background-color : #dbe8ff;
+  color : #4984c6;
+  background-color : #3d3d3d;
   font-size: 50px;
   height: 100%;
   h1{

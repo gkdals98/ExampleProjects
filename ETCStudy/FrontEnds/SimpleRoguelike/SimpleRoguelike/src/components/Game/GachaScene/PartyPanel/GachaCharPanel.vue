@@ -24,7 +24,8 @@ export default {
 <style scoped lang="scss">
 button {
   font-size: 40px;
-  background-color : #98f3ae;
+  background-color : #3d3d3d;
+  color : #4984c6;
   width: 120px;
   height: 120px;
 	border-radius: 10px 10px 10px 10px / 10px 10px 10px 10px;

@@ -17,15 +17,15 @@ export default {
   data : function(){
     return{
       defjewel: this.jewel,
-      current_panel : MAIN
+      current_panel : RESULT
     }
   },
   props:[
     'jewel',
   ],
   components: {
-      GachaMain,
-      GachaResult
+    GachaMain,
+    GachaResult
   },
   methods:{
     startButtonClicked : function(){
@@ -38,8 +38,9 @@ export default {
 #gacha_panel {
   margin-left: auto;
   margin-right: auto;
+  margin-top: 5px;
   margin-bottom: 10px;
   width: 780px;
-  height: 410px;
+  height: 370px;
 }
 </style>
