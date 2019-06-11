@@ -1,7 +1,7 @@
 <template>
   <div id="gacha-buttons">
-    <button v-on:click="singlegachaButtonClicked">1</button>
-    <button v-on:click="fivegachaButtonClicked">5</button>
+    <button class="btn-emphasis" v-on:click="singlegachaButtonClicked">1</button>
+    <button class="btn-emphasis" v-on:click="fivegachaButtonClicked">5</button>
   </div>
 </template>
 
@@ -24,17 +24,15 @@ export default {
 }
 </script>
 <style scoped lang="scss">
+@import "../../../../common/css/theme_template";
+
 #gacha-buttons{
   height: 80px;
   width : 300px;
   padding-left: 490px;
   padding-top: 10px;
   button{
-     font-family:Arial;
-     border-style: none;
      border-radius: 10px;
-     background-color : #002e82;
-     color : #FFFFFF;
      font-size: 40px;
      height: 100%;
      width : 130px;

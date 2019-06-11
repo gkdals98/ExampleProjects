@@ -36,6 +36,7 @@ export default {
 <style scoped lang="scss">
 @import "../../../common/css/size-template";
 #gacha_scene {
+  padding-top: 10px;
   height: 100%;
   background-color : #3d3d3d;
 }

@@ -6,7 +6,7 @@
     <GachaCharPanel v-bind:char="slot3"/>
     <GachaCharPanel v-bind:char="slot4"/>
     <GachaCharPanel v-bind:char="slot5"/>
-    <button id="next_button">Go</button>
+    <button class="btn btn-default-ui" id="next_button">Go</button>
   </div>
   </div>
 </template>
@@ -36,6 +36,7 @@ export default {
 }
 </script>
 <style scoped lang="scss">
+@import "../../../../common/css/theme_template";
 #party_panel {
   background-color : #879ab7;
   width: 800px;
@@ -45,7 +46,6 @@ export default {
     padding-left: 5px;
     padding-top: 5px;
     #next_button{
-      color : #003777;
       font-size: 40px;
       width: 160px;
       height: 120px;

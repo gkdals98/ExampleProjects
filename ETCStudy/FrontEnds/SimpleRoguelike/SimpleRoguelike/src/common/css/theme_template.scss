@@ -1,0 +1,28 @@
+@mixin button-bg($bg, $txt) {
+  background: $bg;
+  color : $txt;
+  &:hover {
+    background:darken($bg,8%);
+    transition: all 0.3s ease;
+  }
+  &:active {
+    background:darken($bg,25%);
+  }
+}
+
+.btn {
+  border-color : #3872d1;
+}
+
+.btn-char {
+   @include button-bg(#3d3d3d, #4984c6);
+}
+
+.btn-emphasis {
+   @include button-bg(#002e82, #FFFFFF);
+   border-style: none;
+}
+
+.btn-default-ui {
+   @include button-bg(#b3bbdc, #001672);
+}

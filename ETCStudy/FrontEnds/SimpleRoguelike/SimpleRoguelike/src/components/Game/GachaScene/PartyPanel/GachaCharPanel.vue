@@ -1,5 +1,5 @@
 <template>
-  <button>
+  <button class="btn btn-char">
     {{char}}
   </button>
 </template>
@@ -22,10 +22,9 @@ export default {
 }
 </script>
 <style scoped lang="scss">
+@import "../../../../common/css/theme_template";
 button {
   font-size: 40px;
-  background-color : #3d3d3d;
-  color : #4984c6;
   width: 120px;
   height: 120px;
 	border-radius: 10px 10px 10px 10px / 10px 10px 10px 10px;

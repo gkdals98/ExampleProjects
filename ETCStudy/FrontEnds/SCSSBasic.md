@@ -2,6 +2,7 @@
 + https://poiemaweb.com/sass-basics - 가이드
 + https://www.google.com/search?q=rgb+picker&oq=rgb+p&aqs=chrome.1.69i57j0l5.3919j0j7&sourceid=chrome&ie=UTF-8 - RGB Picker
 + SCSS 문법을 공부하며 잊어버리기 쉬운 문법이나 Tip을 정리할 계획이다. 하는김에 CSS 쪽도 조금 복습하자.
++ 간단한 SCSS 문법 사용에 익숙해지면 1단계 통과. mixin을 어느정도까지 마음대로 주무르면 2단계 통과. 그걸로 어떻게하면 css파일들을 깔끔하게 정리할 수 있을지 보이면 3단계 통과.
 
 ### 1. CSS 기본 선택자
 + **기본 선택자**
@@ -64,4 +65,5 @@ div #app{
 + http://rwdb.kr/fonts/ - 위 사이트의 무료 폰트 모음인데 개중에는 상업 이용도 가능한 것들도 있다.
 + https://www.bestcssbuttongenerator.com/#/1 - 버튼 CSS 생성하는건데.... 대충 어떤 느낌으로 제작하는지 감 잡기에 좋을 것 같은데.
 + https://codepen.io/collection/ABNwxq/5/ - 백그라운드 이펙트 모음.
-
++ https://www.google.com/search?q=sass+theme+mixin&oq=sass+theme+mixin&aqs=chrome..69i57j33.8543j0j7&sourceid=chrome&ie=UTF-8 - 테마를 지정하는 법에 대해
++ https://codepen.io/jason-kinney/pen/AqbCi - Button에 테마 적용하기 예제. mixin이랑 덜 친할 때 보기 좋은 예제이기도 한 듯. 
