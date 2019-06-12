@@ -1,21 +1,18 @@
 <template>
-  <div id="gacha_scene">
+  <div id="map_scene">
     <StatusBar/>
-    <GachaPanel @tryGacha="tryGacha" @selectCharacter="selectCharacter" v-bind:jewel="jewel"/>
     <PartyPanel @settingEnd="tryMoveToDungeon"/>
   </div>
 </template>
 
 <script>
-import GachaPanel from "./GachaPanel/GachaPanel"
 import PartyPanel from "../Common/UI/PartyPanel/PartyPanel"
 import StatusBar from "../Common/UI/StatusBar/StatusBar"
 
 export default {
-  name : 'GachaScene',
+  name : 'MapScene',
   components: {
     StatusBar,
-    GachaPanel,
     PartyPanel
   },
   data : function(){
@@ -35,7 +32,7 @@ export default {
 </script>
 <style scoped lang="scss">
 @import "../../../common/css/size-template";
-#gacha_scene {
+#map_scene {
   padding-top: 10px;
   height: 100%;
   background-color : #3d3d3d;
