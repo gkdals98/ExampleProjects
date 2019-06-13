@@ -5,7 +5,7 @@
     <GachaCharPanel v-bind:char="slot3"/>
     <GachaCharPanel v-bind:char="slot4"/>
     <GachaCharPanel v-bind:char="slot5"/>
-    <button class="btn btn-default-ui" id="next_button">Go</button>
+    <button class="btn default-ui rounded" id="next_button" v-on:click="StartButtonClicked">{{btnsign}}</button>
   </div>
 </template>
 
@@ -21,14 +21,20 @@ export default {
       slot3 : "C",
       slot4 : "D",
       slot5 : "E",
+      btnsign : "Go"
     }
   },
   components: {
     GachaCharPanel,
   },
   methods:{
-    startButtonClicked : function(){
-      this.$emit('start')
+    StartButtonClicked : function(){
+      this.$emit('nextSign', this.btnsign)
+      if (this.btnsign === "Go"){
+        this.btnsign = "Dive";
+      }else if(this.btnsign === "Dive"){
+        this.btnsign = "Go";
+      }
     }
   }
 }
@@ -41,6 +47,7 @@ export default {
   display: flex;
   flex-flow: row wrap;
   background-color : #879ab7;
+  margin-top: 5px;
   width: 800px;
   height: 130px;
 	border-radius: 10px 10px 10px 10px / 10px 10px 10px 10px;
@@ -50,7 +57,6 @@ export default {
     font-size: 40px;
     width: 160px;
     height: 120px;
-  	border-radius: 10px 10px 10px 10px / 10px 10px 10px 10px;
   }
 }
 </style>

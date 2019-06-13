@@ -1,5 +1,5 @@
 <template>
-  <button class="btn btn-char">
+  <button class="btn ui-char rounded">
     {{char}}
   </button>
 </template>
@@ -26,6 +26,5 @@ export default {
 button {
   width: 150px;
   height: 270px;
-	border-radius: 10px 10px 10px 10px / 10px 10px 10px 10px;
 }
 </style>

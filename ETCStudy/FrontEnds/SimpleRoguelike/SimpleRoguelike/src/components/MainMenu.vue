@@ -16,7 +16,7 @@ export default {
   methods:{
     startButtonClicked : function(){
       console.log("Start Game")
-      this.$emit('start')
+      this.$emit('start-intro')
     }
   }
 }

@@ -1,55 +1,61 @@
 <template>
-  <div id="game">
-    <IntroScene v-if="current_scene===0" @start-game="sceneGachaSet"/>
-    <GachaScene v-if="current_scene===1" @settingEnd="scenePlaySet"/>
-    <MapScene v-if="current_scene===2" @stageEnd="stageEnd"/>
-    <StageScene v-if="current_scene===3" @stageEnd="stageEnd"/>
+  <div id="frame">
+    <StatusBar/>
+    <div id="game">
+      <GachaScene v-if="current_scene===0"/>
+      <MapScene v-if="current_scene===1"/>
+      <StageScene v-if="current_scene===2"/>
+    </div>
+    <PartyPanel @nextSign="setNextState"/>
   </div>
 </template>
 
 <script>
-import IntroScene from "./IntroScene"
 import GachaScene from "./GachaScene/GachaScene"
 import MapScene from "./MapScene/MapScene"
 import StageScene from "./StageScene/StageScene"
 import ResultScene from "./ResultScene/ResultScene"
+import PartyPanel from "./Common/UI/PartyPanel/PartyPanel"
+import StatusBar from "./Common/UI/StatusBar/StatusBar"
 
-const INTRO = 0
-const GACHA = 1
-const MAP = 2
-const STAGE = 3
+const GACHA = 0
+const MAP = 1
+const STAGE = 2
 
 export default {
   name : 'GameFrame',
   components: {
-    IntroScene,
+    StatusBar,
     GachaScene,
     MapScene,
-    StageScene
+    StageScene,
+    PartyPanel
   },
   data : function(){
     return{
-      current_scene : INTRO
+      current_scene : GACHA
     }
   },
   methods:{
-    sceneGachaSet : function(){
-      this.current_scene = GACHA;
-    },
-    sceneMapSet : function(){
-      this.current_scene = MAP;
-    },
-    scenePlaySet : function(){
-      this.current_scene = STAGE;
-    },
-    stageEnd : function(result){
-
+    setNextState : function(btnsign){
+      if(btnsign==="Go"){
+        this.current_scene = MAP;
+      }
+      else if(btnsign==="Dive"){
+        this.current_scene = GACHA;
+      }
     }
   }
 }
 </script>
 <style scoped lang="scss">
-#game {
+#frame{
+  background-color: #3d3d3d;
   height: 100%;
+  padding-top: 10px;
+  #game {
+    margin-top: 5px;
+    height: 370px;
+  }
 }
 </style>

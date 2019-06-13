@@ -1,31 +1,19 @@
 <template>
   <div id="map_scene">
-    <StatusBar/>
-    <PartyPanel @settingEnd="tryMoveToDungeon"/>
   </div>
 </template>
 
 <script>
-import PartyPanel from "../Common/UI/PartyPanel/PartyPanel"
-import StatusBar from "../Common/UI/StatusBar/StatusBar"
 
 export default {
   name : 'MapScene',
-  components: {
-    StatusBar,
-    PartyPanel
-  },
-  data : function(){
-    return{
-      jewel : 5
-    }
-  },
-  methods:{
-    tryGacha : function(){
+  created : function(){
+    this.setMap(1);
+  },methods:{
+    tryMove : function(){
     },
-    selectCharacter : function(){
-    },
-    tryMoveToDungeon : function(){
+    setMap : function(stage){
+      console.log(stage + " Stage, Map Generated")
     }
   }
 }
@@ -33,8 +21,7 @@ export default {
 <style scoped lang="scss">
 @import "../../../common/css/size-template";
 #map_scene {
-  padding-top: 10px;
   height: 100%;
-  background-color : #3d3d3d;
+  background-color : #524d69;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="btn btn-char">
+  <div class="ui-char">
     {{char}}
   </div>
 </template>

@@ -1,6 +1,5 @@
 <template>
-  <div id="status_bar">
-    <div class="status_item">{{stex}}</div>
+  <div id="status_bar" class="default-ui rounded">
   </div>
 </template>
 
@@ -20,17 +19,11 @@ export default {
 }
 </script>
 <style scoped lang="scss">
+@import "../../../../../common/css/theme_template";
 #status_bar {
   display: flex;
   justify-content: space-around;
-  background-color : #3d3d3d;
-  color : #FFFFFF;
   width: 800px;
-  height: 35px;
-  .status_item{
-    display: inline-block;
-    float:left;
-    text-align: center;
-  }
+  height: 40px;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div id="gacha-buttons">
-    <button class="btn-emphasis" v-on:click="singlegachaButtonClicked">1</button>
-    <button class="btn-emphasis" v-on:click="fivegachaButtonClicked">5</button>
+    <button class="btn btn-emphasis rounded" v-on:click="singlegachaButtonClicked">1</button>
+    <button class="btn btn-emphasis rounded" v-on:click="fivegachaButtonClicked">5</button>
   </div>
 </template>
 
@@ -32,7 +32,6 @@ export default {
   padding-left: 490px;
   padding-top: 10px;
   button{
-     border-radius: 10px;
      font-size: 40px;
      height: 100%;
      width : 130px;
