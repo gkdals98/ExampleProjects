@@ -15,9 +15,6 @@ export default {
       'char'
   ],
   methods:{
-    startButtonClicked : function(){
-      this.$emit('start')
-    }
   }
 }
 </script>

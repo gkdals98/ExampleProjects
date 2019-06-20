@@ -33,6 +33,8 @@ export default {
       if (this.btnsign === "Go"){
         this.btnsign = "Dive";
       }else if(this.btnsign === "Dive"){
+        this.btnsign = "Battle";
+      }else if(this.btnsign === "Battle"){
         this.btnsign = "Go";
       }
     }

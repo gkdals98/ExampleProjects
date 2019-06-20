@@ -25,6 +25,12 @@ border-color : #3872d1;
    border-style: none;
 }
 
+.btn-node{
+   @include bg-and-font-theme(#6796ff, #FFFFFF);
+   border-color: #000000;
+   border-width: 5px;
+}
+
 .default-ui {
    @include bg-and-font-theme(#b3bbdc, #001672);
 }

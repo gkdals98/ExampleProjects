@@ -42,6 +42,9 @@ export default {
         this.current_scene = MAP;
       }
       else if(btnsign==="Dive"){
+        this.current_scene = STAGE;
+      }
+      else if(btnsign==="Battle"){
         this.current_scene = GACHA;
       }
     }
