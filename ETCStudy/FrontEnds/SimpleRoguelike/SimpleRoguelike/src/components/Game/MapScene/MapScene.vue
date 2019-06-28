@@ -1,6 +1,6 @@
 <template>
   <div id="map_scene">
-      <canvas id="map"/>
+      <MapLineCanvas/>
       <MapNode
         v-for="(pos, index) in lis"
         v-bind:x="pos.x"
@@ -11,6 +11,7 @@
 
 <script>
 import MapNode from './MapNode.vue'
+import MapLineCanvas from './MapLineCanvas.vue'
 
 export default {
   name : 'MapScene',
@@ -36,7 +37,8 @@ export default {
     }
   },
   components : {
-    MapNode
+    MapNode,
+    MapLineCanvas
   },
   methods:{
     tryMove : function(){
@@ -56,10 +58,5 @@ export default {
   -webkit-flex-flow: row wrap; /* Safari 6.1+ */
   display: flex;
   flex-flow: row wrap;
-    #map{
-      background-color: #524d69;
-      width: 800px;
-      height: 370px;
-    }
 }
 </style>
