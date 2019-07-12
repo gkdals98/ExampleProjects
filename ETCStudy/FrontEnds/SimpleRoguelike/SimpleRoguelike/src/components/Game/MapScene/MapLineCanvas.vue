@@ -1,5 +1,5 @@
 <template>
-  <canvas id="map_line"/>
+  <canvas id="map_line" width="800" height="370"></canvas>
 </template>
 
 <script>
@@ -13,8 +13,11 @@ export default {
       console.log(stage + " Stage, Line Sat")
        var c = document.getElementById("map_line");
        var ctx = c.getContext("2d");
-       ctx.moveTo(50, 57);
-       ctx.lineTo(140, 60);
+       //ctx.scale(0.42, 0.42);
+       ctx.moveTo(0, 0);
+       ctx.lineTo(60, 60);
+       ctx.moveTo(60, 60);
+       ctx.lineTo(360, 150);
        ctx.stroke();
     }
   }
@@ -23,7 +26,5 @@ export default {
 <style scoped lang="scss">
 #map_line{
   background-color: #524d69;
-  width: 800px;
-  height: 370px;
 }
 </style>

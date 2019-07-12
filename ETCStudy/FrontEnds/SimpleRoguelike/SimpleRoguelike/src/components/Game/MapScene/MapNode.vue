@@ -16,8 +16,8 @@ export default {
   },
   data : function(){
     return {
-      toppx : this.x + "px",
-      leftpx : this.y + "px"
+      leftpx : this.x + "px",
+      toppx : this.y + "px"
     }
   }
 }
