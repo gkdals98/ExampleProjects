@@ -1,25 +1,30 @@
 <template>
-  <canvas id="map_line" width="800" height="370"></canvas>
+  <div width="800" height="370">
+    <canvas id="map_line" ref="map_line_canvas" width="800" height="370"></canvas>
+    <slot></slot>
+  </div>
 </template>
 
 <script>
 export default {
   name : 'MapLineCanvas',
-  mounted : function(){
-    this.setLine(1)
-  },
-  methods:{
-    setLine : function(stage){
-      console.log(stage + " Stage, Line Sat")
-       var c = document.getElementById("map_line");
-       var ctx = c.getContext("2d");
-       //ctx.scale(0.42, 0.42);
-       ctx.moveTo(0, 0);
-       ctx.lineTo(60, 60);
-       ctx.moveTo(60, 60);
-       ctx.lineTo(360, 150);
-       ctx.stroke();
+  data() {
+    return {
+      provider: {
+        context: null
+      }
     }
+  },
+
+  provide () {
+    return {
+      provider: this.provider
+    }
+  },
+
+  mounted () {
+    this.provider.context = this.$refs['map_line_canvas'].getContext('2d');
+    this.provider.context.lineWidth = 5;
   }
 }
 </script>

@@ -229,7 +229,7 @@ ______
 + 대충 단순 맵에 필요한 데이터를 정리하자면....
     1. 각 row의 데이터 길이가 다른 방 데이터 2차원 배열이 있다.
     2. 방 데이터는 다음의 데이터를 가지고 있다. 이어지는 노드의 배열상 좌표, 내 좌표 x, y. 선택된  다음 노드(기본 null 상태. null 검사 가능하니까 이게 또 좋네). 자신의 구조.
-    3. 층수는 GameData가 들고있다는다. 유저의 위치는... 게임 객체가 들고있어야 할 것 같기도 하고 맵 객체가 들고있어야할 것 같기도 하고 애매허다. 맵이 들고있자.
+    3. 층수는 GameData가 들고있다는다. 유저의 위치는... 게임 객체가 들고있어야 할 것 같기도 하고 맵 객체가 들고있어야할 것 같기도 하고.. 유저 객체가 들고있는게 맞을듯. 유저의 좌표니까.
 
 + 맵 계획은 완료.
 + 문제는 컴포넌트에 개입하는 과정이 데이터 저장과 vue에서 이를 해석하는 과정을 통해 이루어져야한다는건데. 뭐 캔버스에 선 긋는건 아래 예제 참조하고. 버튼 배치도 어떻게 잘 해서(...) 하면 되지 않을까.
@@ -244,7 +244,26 @@ ______
     3. Mapnode의 좌표를 토대로.... 그림을 그린다. 캔버스를 슬슬 별도 vue로 분리해야할 차래. 아니면.. 맵 신에서 이걸 그리거나. 장단점이 있는데 순리상은 분리가 맞긴 허지.
     * 해보니까 부모보다 무조건 자식 created가 나중에 실행되네? 근데 created에서 id값 참조가 안된다. 그래서 map의 read data 동작은 created에서, node의 배치 동작 및 canvas의 draw line 동작은 mounted에서 동작하도록 변경.
     * 문제 - canvas의 좌표가 화면상 pixel 좌표랑 따로 노는 것 같다. 이건 Cnavas가 생성된 다음에 css가 적용돼서 생긴 문제. 즉 이미 생긴 캔버스를 늘려서 사이즈를 맞춰서 생긴 문제다. canvas 크기 속성을 html에서 선언해서 해결 완료...
-     
+    * 참고자료 링크에 있는 vue canvas controlling을 적용해 구현했다. 이거 되니까 겁나 기분좋다.
+    4. warning 잡고가기.
+    * 현 상태의 v-for에선 warning이 출력된다. 원인은 key값을 안줬기 때문. 우선 index로 key값을 줬다.
+    5. vuex로 임시 데이터를 두고 해당 데이터 참고하기.
+    * 구조는 아래와 같다.
+    + x좌표
+    + y좌표
+    + 다음 노드의 배열상 위치
+    + isCurrent (노드 강조용. class와 css 활용)
+    + isClickable (노드 활성화용)
+    * 현재 위치와 클릭으로 선택된 진행방향은 map이 들고있자. 즉, 붉은 선은 map이 긋는다. 다른 노드를 선택하면 선도 다시 긋겠지.
+    * 다만 저 현재 좌표, 선택 좌표를 vue를 이용해 즉시 반영할 방법이 좀 애매하다. 고작 하나씩 채크되는 값을 위해 배열에 하나하나 boolean필드 넣긴 싫은데.
+    * 걍 v for에서 계산해서 넣으면 되지.... 어 근데 그거 또 vfor 돌릴때마다 하나하나 계산하는거? ㅋㅋㅋㅋ 이런 빠가같은. 근데 어차피 누군가 계산하긴 해야함. 무의미한 데이터냐 무의미한 계산이냐 선택할 차래다. 그리고 그리 부하 엄청 걸리는거 아니라면 보통은 계산이 더 낫지...
+    * map generate의 순간이다 드디어. 여기부터 본격적인 게임의 모양세가 나오기 시작한다.
+    * 아직 익숙치 않은거 하나 적음.
+        + export let map_model = new CurrentMapModel(); 와 같은 선언은 singletone 객체를 내보낸다.
+        + export class A {} 와 같은 선언은 클래스의 정의를 내보낸다. 즉 데이터 클래스는 이거로 내보내면 됨.
+    6. 흥미를 다시 살리기 위해 map generate부터 한다.
+    * 우선 공식부터 다시 생각해보자고. 다시 보니까 전혀 정해지지 않았네 이거. 세상에.
+    * 패키지 구성도 개판인데요. DungeonGenerator랑 DungeonData, RoomNode, DungeonController, 이 네 개 있어야... 하나? 어떻게 나누지? 
 ------
 #### Data
 + js로 객체를 들고있는게 나을듯. 그냥 export해서 싱글톤으로 가자. 인터넷에 vuex export하는거 잘 나와있다.
@@ -409,3 +428,4 @@ ______
 + 일단 선 교차 검사는 여기. - https://tibyte.kr/288
 + 웹팩 데이터 클래스 관련. 웹팩 모듈은 강제 싱글톤이다. 더 좋은 자료도 많지 않을까? 아직은 잘 모르겠다 - https://stackoverflow.com/questions/49569061/is-singleton-guaranteed-to-be-preserved-during-webpack-or-rollup-module-bundling
 + 흠... 일단 뷰 안에 컴포넌트를 릴레이티브하게 넣는 방법같다. - https://stackoverflow.com/questions/49983893/position-coordinates-of-an-element-related-to-viewport-not-relative-via-js
++ 라인 스타일 - https://developer.mozilla.org/ko/docs/Web/HTML/Canvas/Tutorial/Applying_styles_and_colors
