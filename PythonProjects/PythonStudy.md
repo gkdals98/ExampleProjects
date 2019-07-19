@@ -430,7 +430,9 @@ result()                    #생성된 객체의 실행
 ```
 
 ### 17. MetaClass - https://code.tutsplus.com/ko/tutorials/quick-tip-what-is-a-metaclass-in-python--cms-26016
-+ **class 네임스페이스**를 만드는 객체.
++ **class 정의 객체**를 만드는 객체.
++ Python에선 class의 정의 또한 하나의 객체이다. class 정의에 언제든지 새로운 값을 추가할 수 있는 이유도 class의 정의가 객체이기 때문이다.
++ 클래스 정의 객체를 생성하는 역할을 하는 것이 Metaclass이다.
 + 일반적인 클래스는 metaclass를 지정해주지 않으면 기본적으로 type을 메타클래스로 삼는다. 즉 class 네임스페이스는 type을 통해 생성된다.
 + 구체적으로 type은 아래와 같은 동작을 수행하는 것이 가능하다.
 ```
