@@ -1,6 +1,6 @@
 <template>
   <div id="map_scene">
-      <MapLineCanvas>
+      <!--<MapLineCanvas>
         <MapLine
           v-for="(line, index) in map_node"
           v-bind:x1="line.x"
@@ -9,13 +9,15 @@
           v-bind:y2="line.y_next"
           v-bind:key="index"
         />
-      </MapLineCanvas>
+      </MapLineCanvas>-->
+    <li v-for="(floors, index) in map_node">
       <MapNode
-        v-for="(pos, index) in map_node"
-        v-bind:x="pos.x"
-        v-bind:y="pos.y"
+        v-for="(node, index) in floors"
+        v-bind:x="node.position_x"
+        v-bind:y="node.position_y"
         v-bind:key="index"
       />
+    </li>
   </div>
 </template>
 
@@ -23,34 +25,22 @@
 import MapNode from './MapNode.vue'
 import MapLine from './MapLine.vue';
 import MapLineCanvas from './MapLineCanvas.vue'
+import { dungeon_controller } from '../Common/Dungeon/DungeonController.js'
+import { map_model } from '../Common/Dungeon/CurrentMapModel.js'
 
 export default {
   name : 'MapScene',
   created : function(){
+    //필히 추후 clear 시점을 수정할 것. 지금 상태로라면 맵이 매번 새로 생긴다.
+    this.clearMap();
+  },
+  mounted : function(){
+    //필히 추후 setMap 시점을 수정할 것. 지금 상태로라면 맵이 매번 새로 생긴다.
     this.setMap(1);
   },
   data : function(){
     return {
-      map_node : [
-        {
-          x : 30,
-          y : 30,
-          x_next : 340,
-          y_next : 130
-        },
-        {
-          x : 340,
-          y : 130,
-          x_next : 170,
-          y_next : 170
-        },
-        {
-          x : 170,
-          y : 170,
-          x_next : 30,
-          y_next : 30
-        }
-      ]
+      map_node : map_model.state.current_map_model
     }
   },
   components : {
@@ -61,7 +51,11 @@ export default {
   methods:{
     tryMove : function(){
     },
+    clearMap: function(){
+      dungeon_controller.clearDungeon();
+    },
     setMap : function(stage){
+      dungeon_controller.createDungeon(stage);
       console.log(stage + " Stage, Map Generated")
     }
   }

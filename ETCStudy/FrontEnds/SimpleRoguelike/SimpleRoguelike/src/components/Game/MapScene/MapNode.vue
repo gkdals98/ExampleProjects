@@ -12,12 +12,14 @@ export default {
   },
   props: {
     x : Number,
-    y : Number
+    y : Number,
+    isClickable : Boolean
   },
   data : function(){
     return {
       leftpx : this.x + "px",
-      toppx : this.y + "px"
+      toppx : this.y + "px",
+      is_clicable : this.isClickable
     }
   }
 }

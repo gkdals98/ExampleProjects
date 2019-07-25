@@ -1,3 +1,8 @@
+import Vue from 'vue'
+import Vuex from 'vuex'
+
+Vue.use(Vuex)
+
 export const map_model = new Vuex.Store({
   // 맵, 플레이어의 현재 위치
   state: {
