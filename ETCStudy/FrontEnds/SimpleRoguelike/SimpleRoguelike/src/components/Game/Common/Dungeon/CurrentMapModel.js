@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import RoomNode from './RoomNode.js';
 
 Vue.use(Vuex)
 
@@ -22,6 +23,10 @@ export const map_model = new Vuex.Store({
     },
     addFloor( state, floor ){
       state.current_map_model.push(floor);
+    },
+    connectLine ( state, {f_x, f_y, t_x, t_y}){
+      console.log("Map Model : Got it - " + f_x + ", " + f_y + ", " + t_x + ", " + t_y);
+      state.current_map_model[f_x][f_y].addNext( t_x, t_y )
     }
   }
 });

@@ -17,6 +17,7 @@ import StageScene from "./StageScene/StageScene"
 import ResultScene from "./ResultScene/ResultScene"
 import PartyPanel from "./Common/UI/PartyPanel/PartyPanel"
 import StatusBar from "./Common/UI/StatusBar/StatusBar"
+import game_controller from "./Common/Core/GameController.js"
 
 const GACHA = 0
 const MAP = 1
