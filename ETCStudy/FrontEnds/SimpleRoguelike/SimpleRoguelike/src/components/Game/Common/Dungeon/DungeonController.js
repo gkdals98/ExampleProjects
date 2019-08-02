@@ -140,32 +140,68 @@ DungeonController.prototype.connectMapLine = function(){
 
     //추가 갈림길을 0~2개 생성한다. 바닐라는 역시 길이 너무 안 만난다.
     //from의 x좌표를 0으로, to의 x좌표를 1로 계산한다.
-    var more_line = Math.floor(Math.random() * 2);
-    for(var i = 0; i < more_line; i++){
-      var is_ok = false;
-      while(!is_ok){
-        var random_f_y = Math.floor(Math.random() * from_length);
-        var random_t_y = Math.floor(Math.random() * to_length);
-        is_ok = true;
-        var r_f_vector = {f_x : 0, f_y : random_f_y, t_x : 1, t_y : random_t_y}
-        for(var j in connected_vector){
-          if(this.isLineCrossed(connected_vector[j], r_f_vector)){
-            is_ok = false;
-          }
-        }
-        if(is_ok){
-          map_model.commit('connectLine', {
-            f_x : current_floor,
-            f_y : (is_front_from ? random_f_y : random_t_y),
-            t_x : current_floor + 1,
-            t_y : (is_front_from ? random_t_y : random_f_y)
-          });
-          connected_vector.push( r_vector );
+    // var more_line = (Math.floor(Math.random() * 1));
+    // console.log("More line " + more_line)
+    // for(var i = 0; i < more_line; i++){
+    //   var is_ok = false;
+    //   while(!is_ok){
+    //     var random_f_y = Math.floor(Math.random() * from_length);
+    //     var random_t_y = Math.floor(Math.random() * to_length);
+    //     is_ok = true;
+    //     var r_vector = {f_x : 0, f_y : random_f_y, t_x : 1, t_y : random_t_y}
+    //     for(var j in connected_vector){
+    //       if(this.isLineCrossed(connected_vector[j], r_vector)){
+    //         is_ok = false;
+    //       }
+    //     }
+    //     if(is_ok){
+    //       map_model.commit('connectLine', {
+    //         f_x : current_floor,
+    //         f_y : (is_front_from ? random_f_y : random_t_y),
+    //         t_x : current_floor + 1,
+    //         t_y : (is_front_from ? random_t_y : random_f_y)
+    //       });
+    //       connected_vector.push( r_vector );
+    //     }
+    //   }
+    // }
+  }
+  var is_end=false;
+  while(!is_end){
+    var cur_p = {x : 0, y : 0};
+    var path = [];
+    while(false){
+      var next_y=0;
+
+      //진행 가능한 최 우측으로 진행.
+      for(var node in map_model.state.current_map_model[cur_p.x][cur_p.y].next_node_array_xy){
+        if(node.y > next_y){
+          next_y=node.y;
         }
       }
-    }
-  }
 
+      cur_p.x++;
+      cur_p.y = next_y;
+      path[cur_p.x] = cur_p.y;
+
+      //
+      if(path[cur_p.x-1])
+      for(var node in map_model.state.current_map_model[cur_p.x-1][path[cur_p.x-1] + 1]){
+        if(node.y > next_y){
+          next_y=node.y;
+        }
+      }
+      path[cur_p.x] = cur_p.y;
+      cur_p.x++;
+      cur_p.x--;
+    }
+    if(cur_p.y == (map_model.state.current_map_model[this.floor_length].length - 1)){
+      is_end = true;
+    }
+
+    //잊고지내는 부분.
+    is_end = true;
+  }
   console.log("Line Connecting finished");
 }
 
@@ -215,18 +251,14 @@ DungeonController.prototype.isLineCrossed = function(vector1, vector2){
   let p3 = { x : vector2.f_x, y : vector2.f_y };
   let p4 = { x : vector2.t_x, y : vector2.t_y };
 
-  console.log("=============Now we need to check this==============")
-  console.log(p1)
-  console.log(p2)
-  console.log(p3)
-  console.log(p4)
-  console.log("====================================================")
+  if(p1.x==p3.x && p2.x==p4.x && p1.y==p3.y && p2.y==p4.y) return true;
 
   if(Math.max(p1.x, p2.x) <= Math.min(p3.x, p4.x)) return false;
   if(Math.min(p1.x, p2.x) >= Math.max(p3.x, p4.x)) return false;
   if(Math.max(p1.y, p2.y) <= Math.min(p3.y, p4.y)) return false;
   if(Math.min(p1.y, p2.y) >= Math.max(p3.y, p4.y)) return false;
 
+  console.log("Hmmm may be this happen")
   let sign1 = (p2.x-p1.x)*(p3.y-p1.y) - (p3.x-p1.x)*(p2.y-p1.y);
   let sign2 = (p2.x-p1.x)*(p4.y-p1.y) - (p4.x-p1.x)*(p2.y-p1.y);
   let sign3 = (p4.x-p3.x)*(p1.y-p3.y) - (p1.x-p3.x)*(p4.y-p3.y);
