@@ -42,9 +42,6 @@ DungeonController.prototype.createRoomNodes = function(){
           this.makePXposition( ui_valiables.canvas_y, floor_width ,current_room ));
       floor_data.push(roomnode);
     }
-    console.log(this.name + " : " + current_floor + " Floor Data Bellow");
-    console.log(floor_data);
-
     map_model.commit('addFloor', floor_data);
   }
 
@@ -62,13 +59,18 @@ DungeonController.prototype.createRoomNodes = function(){
 DungeonController.prototype.connectMapLine = function(){
   console.log(this.name + " : Connect Line Between Nodes");
 
+  var map = map_model.state.current_map_model;
+  var oneway_count = [0, 0, 0, 0, 0];
   //1층부터 마지막 층 직전까지 (floor가 x, )
   for (var current_floor = 0; current_floor < this.floor_length-1 ; current_floor++){
     console.log(this.name + " : Connect Line Start from " + (current_floor+1) + "F, length : " + map_model.state.current_map_model[current_floor].length);
     //더 큰 쪽에서 더 작은 쪽으로 선 긋기 알고리즘을 진행하기 위한 준비.
-    console.log(map_model.state.current_map_model[current_floor])
-    var leng1 = map_model.state.current_map_model[current_floor].length;
-    var leng2 = map_model.state.current_map_model[current_floor+1].length;
+    console.log("흠흠흠흠흠흠흠")
+
+    console.log(oneway_count)
+    console.log(map[current_floor])
+    var leng1 = map[current_floor].length;
+    var leng2 = map[current_floor+1].length;
 
     var is_front_from = leng1 >= leng2 ? true : false;
 
@@ -138,69 +140,121 @@ DungeonController.prototype.connectMapLine = function(){
       }
     }
 
-    //추가 갈림길을 0~2개 생성한다. 바닐라는 역시 길이 너무 안 만난다.
+    //외길 카운트를 세어 한 가닥으로 생성된 길에 추가로 갈림길을 달아주는 메서드.
+    //외길 수치가 4 이상이 되면 랜덤으로 4번, 해당 노드에서 길을 생성하며 선 교차가 없을 시 선을 이어준다. 생성 안됐다면 카운트를 계속 늘린다.
+    var to_y_for_oneway = 0;
+
+    for(var from_y = 0; from_y < from_length; from_y++){
+      //추가 갈림길 생성 대상이 아니라면 외길로 판단할 수 있다.
+        console.log("야 너 몇 번 돌아" + from_y)
+      if(!connect_latter.includes(from_y)){
+        //우선 현재 front 중 외길 카운트가 3인지 채크한 후 동작 결정.
+        var need_connect = false;
+        if(is_front_from){
+          need_connect = (oneway_count[from_y] > 2);
+        }else{
+          need_connect = (oneway_count[to_y_for_oneway] > 2);
+        }
+        //선을 잇는 동작이 필요할 시 6번 시도
+        if(need_connect){
+          console.log("그 처절한 시도나 함 봅시다. need : " + need_connect + ", from where? : " + (is_front_from ? from_y : to_y_for_oneway))
+          for(var _ = 0; _ < 10; _++){
+            var random_back = 0;
+
+            if(is_front_from){
+              random_back = Math.floor(Math.random() * to_length);
+              r_vector = {f_x : 0, f_y : from_y, t_x : 1, t_y : random_back};
+            }else{
+              random_back = Math.floor(Math.random() * from_length);
+              r_vector = {f_x : 0, f_y : random_back, t_x : 1, t_y : to_y_for_oneway};
+            }
+
+            var is_ok = true;
+            for(var j in connected_vector){
+              if(this.isLineCrossed(connected_vector[j], r_vector)){
+                is_ok = false;
+              }
+            }
+            //한 번만 OK가 나면 바로 break한다.
+            if(is_ok){
+              var front_y = is_front_from ? from_y : to_y_for_oneway;
+
+              map_model.commit('connectLine', {
+                f_x : current_floor,
+                f_y : front_y,
+                t_x : current_floor + 1,
+                t_y : random_back
+              });
+              connected_vector.push( r_vector );
+              oneway_count[front_y] = 0;
+              break;
+            }
+          }
+        }
+        //새로 생긴 선이 없다면 count를 ++한다.
+
+        //to 쪽의 y카운트도 증가시킴.
+        to_y_for_oneway++;
+      }
+    }
+
+    //추가 갈림길을 0~1개 생성한다.
     //from의 x좌표를 0으로, to의 x좌표를 1로 계산한다.
-    // var more_line = (Math.floor(Math.random() * 1));
-    // console.log("More line " + more_line)
-    // for(var i = 0; i < more_line; i++){
-    //   var is_ok = false;
-    //   while(!is_ok){
-    //     var random_f_y = Math.floor(Math.random() * from_length);
-    //     var random_t_y = Math.floor(Math.random() * to_length);
-    //     is_ok = true;
-    //     var r_vector = {f_x : 0, f_y : random_f_y, t_x : 1, t_y : random_t_y}
-    //     for(var j in connected_vector){
-    //       if(this.isLineCrossed(connected_vector[j], r_vector)){
-    //         is_ok = false;
-    //       }
-    //     }
-    //     if(is_ok){
-    //       map_model.commit('connectLine', {
-    //         f_x : current_floor,
-    //         f_y : (is_front_from ? random_f_y : random_t_y),
-    //         t_x : current_floor + 1,
-    //         t_y : (is_front_from ? random_t_y : random_f_y)
-    //       });
-    //       connected_vector.push( r_vector );
-    //     }
-    //   }
-    // }
-  }
-  var is_end=false;
-  while(!is_end){
-    var cur_p = {x : 0, y : 0};
-    var path = [];
-    while(false){
-      var next_y=0;
-
-      //진행 가능한 최 우측으로 진행.
-      for(var node in map_model.state.current_map_model[cur_p.x][cur_p.y].next_node_array_xy){
-        if(node.y > next_y){
-          next_y=node.y;
+    var more_line = (Math.floor(Math.random() * 2));
+    console.log("More line " + more_line)
+    for(var i = 0; i < more_line; i++){
+      var is_ok = false;
+      while(!is_ok){
+        var random_f_y = Math.floor(Math.random() * from_length);
+        var random_t_y = Math.floor(Math.random() * to_length);
+        is_ok = true;
+        var r_vector = {f_x : 0, f_y : random_f_y, t_x : 1, t_y : random_t_y}
+        for(var j in connected_vector){
+          if(this.isLineCrossed(connected_vector[j], r_vector)){
+            is_ok = false;
+          }
+        }
+        if(is_ok){
+          map_model.commit('connectLine', {
+            f_x : current_floor,
+            f_y : (is_front_from ? random_f_y : random_t_y),
+            t_x : current_floor + 1,
+            t_y : (is_front_from ? random_t_y : random_f_y)
+          });
+          connected_vector.push( r_vector );
         }
       }
+    }
 
-      cur_p.x++;
-      cur_p.y = next_y;
-      path[cur_p.x] = cur_p.y;
+    var temp_oneway_count = [0, 0, 0, 0, 0];
 
-      //
-      if(path[cur_p.x-1])
-      for(var node in map_model.state.current_map_model[cur_p.x-1][path[cur_p.x-1] + 1]){
-        if(node.y > next_y){
-          next_y=node.y;
+    //선을 다 이었으면 외길 채크를 해야한다.
+    //외길의 조건은 front 노드에서 이어진 길이 하나뿐인 경우.
+    var check_front_is_oneway = [[],[],[],[],[]];
+    for(var j in connected_vector){
+      if(is_front_from){
+        check_front_is_oneway[(connected_vector[j].f_y)].push(connected_vector[j]);
+      }else{
+        check_front_is_oneway[(connected_vector[j].t_y)].push(connected_vector[j]);
+      }
+    }
+
+    //from에서 간 길이 하나뿐이라면 그 하나뿐인 to의 카운트를 올린다. + 두 군데에서 진입해올 경우 카운트가 높은 쪽을 남겨야한다.
+    for(var y_count in check_front_is_oneway){
+      if(check_front_is_oneway[y_count].length === 1){
+        if(is_front_from){
+          temp_oneway_count[check_front_is_oneway[y_count][0].t_y] = oneway_count[check_front_is_oneway[y_count][0].f_y] + 1
+        }else{
+          temp_oneway_count[check_front_is_oneway[y_count][0].f_y] = oneway_count[check_front_is_oneway[y_count][0].t_y] + 1;
         }
       }
-      path[cur_p.x] = cur_p.y;
-      cur_p.x++;
-      cur_p.x--;
     }
-    if(cur_p.y == (map_model.state.current_map_model[this.floor_length].length - 1)){
-      is_end = true;
-    }
+    //마지막으로 다음 순환을 위해 외길 카운트를 저장한다.
+    oneway_count = temp_oneway_count;
+    console.log("허허허허허허")
 
-    //잊고지내는 부분.
-    is_end = true;
+    console.log(temp_oneway_count)
+    console.log(oneway_count)
   }
   console.log("Line Connecting finished");
 }
@@ -258,7 +312,6 @@ DungeonController.prototype.isLineCrossed = function(vector1, vector2){
   if(Math.max(p1.y, p2.y) <= Math.min(p3.y, p4.y)) return false;
   if(Math.min(p1.y, p2.y) >= Math.max(p3.y, p4.y)) return false;
 
-  console.log("Hmmm may be this happen")
   let sign1 = (p2.x-p1.x)*(p3.y-p1.y) - (p3.x-p1.x)*(p2.y-p1.y);
   let sign2 = (p2.x-p1.x)*(p4.y-p1.y) - (p4.x-p1.x)*(p2.y-p1.y);
   let sign3 = (p4.x-p3.x)*(p1.y-p3.y) - (p1.x-p3.x)*(p4.y-p3.y);

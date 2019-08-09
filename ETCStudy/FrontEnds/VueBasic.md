@@ -110,9 +110,10 @@ npm run build --report
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
 ```
 + **근데**.... 커밋은 어디까지 해야하는거지....? 우선 최소한의 파일만 커밋해볼까 아니면.... 아니면 node_modules 폴더 빼고 진짜 다 커밋해야하나... 내 생각엔 다 하는게 맞는듯...
-
-
-
++ build는 프로젝트 dir에서 아래와 같이 수행.
+```
+npm run build
+```
 #### Vuex
 + https://vuex.vuejs.org/kr/
 + Vue용 상태관리 패턴 라이브러리.

@@ -1,0 +1,9 @@
+#Node JS
+* https://nodejs.org/api/events.html#events_class_eventemitter
+* JavaScript로 설정 가능한 Backend 서버.
+* js파일로 Backend 동작들을 정의한 뒤 node ***.js 와 같은 커멘드로 서버를 실행시킬 수 있다.
+* 설정을 위해 알아야하는 구문들 이외에 추가적으로 다양한 도구들을 제공하는데 당장 떠오르는건 npm, inspect, dev server 등이다. dev server 기능은 우린 이미 사용중이다.
+* **npm**은 Node js에서 제공하는 수많은 도구들의 의존성을 관리해주는 도구이다. rpm, yum, maven 등과 마찬가지로 공용 레파지토리의 의존성을 가져오며 설정파일을 통해 이를 손쉽게 관리하게 해준다. 
+* **inspector**는 디버깅 기능같은데 아직은 어디 쓰는 기능인지 전혀 모른다.
+* **dev server**는 반쯤 webpack등의 컴파일 도구를 위한 기능이다. 컴파일이 필요한 코드들도 nodejs 상의 일반적인 js파일처럼 수정 결과가 실시간으로 반영되는 개발용 서버를 의미한다.
+ 

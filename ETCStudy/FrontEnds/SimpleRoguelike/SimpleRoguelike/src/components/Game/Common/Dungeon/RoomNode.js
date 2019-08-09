@@ -8,7 +8,7 @@ export default class RoomNode {
 
     //다음 노드의 배열상 좌표를 얻어온다.
     RoomNode.prototype.addNext = function(array_x, array_y){
-      console.log("Get next - x : " + array_x + ", y : " + array_y);
+      //console.log("Get next - x : " + array_x + ", y : " + array_y);
       this.next_node_array_xy.push(
         { x : array_x,  y : array_y }
       )
