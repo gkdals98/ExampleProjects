@@ -1,6 +1,7 @@
 import RoomNode from './RoomNode.js';
 import { map_model } from './CurrentMapModel.js';
 import { ui_valiables } from '../Data/UIValiables.js'
+import { game_controller } from "../Core/GameController.js"
 class DungeonController{
   constructor(){
     this.floor_length = 0;
@@ -8,10 +9,16 @@ class DungeonController{
   }
 }
 
-DungeonController.prototype.clearDungeon = function(stage){
+//진행 버튼 입력이 들어올 시 어디로 진행할지를 판단.
+DungeonController.prototype.tryProgress = function(){
+  console.log(this.name + " : Try Progress.");
+}
+
+DungeonController.prototype.clearDungeon = function(){
   console.log(this.name + " : Clear Dungeon");
   map_model.commit('clearMapModel');
 }
+
 DungeonController.prototype.createDungeon = function(stage){
   // 층수는 1층이 6  2, 3층이 7  4, 5층이 8
   console.log(this.name + " : Start dungeon generating - floor " + stage);
@@ -40,6 +47,11 @@ DungeonController.prototype.createRoomNodes = function(){
     for (var current_room = 1; current_room <= floor_width; current_room++){
       var roomnode = new RoomNode(this.makePXposition( ui_valiables.canvas_x, this.floor_length, current_floor ),
           this.makePXposition( ui_valiables.canvas_y, floor_width ,current_room ));
+      if(current_floor !== 1){
+        roomnode.setClickable(false);
+      }else{
+        roomnode.setClickable(true);
+      }
       floor_data.push(roomnode);
     }
     map_model.commit('addFloor', floor_data);
@@ -56,6 +68,7 @@ DungeonController.prototype.createRoomNodes = function(){
 **/
 
 //방들 사이에 선을 이어주는 부분.
+//첫 층을 생성할 땐 clickable 상태로 생성한다.
 DungeonController.prototype.connectMapLine = function(){
   console.log(this.name + " : Connect Line Between Nodes");
 
@@ -65,7 +78,6 @@ DungeonController.prototype.connectMapLine = function(){
   for (var current_floor = 0; current_floor < this.floor_length-1 ; current_floor++){
     console.log(this.name + " : Connect Line Start from " + (current_floor+1) + "F, length : " + map_model.state.current_map_model[current_floor].length);
     //더 큰 쪽에서 더 작은 쪽으로 선 긋기 알고리즘을 진행하기 위한 준비.
-    console.log("흠흠흠흠흠흠흠")
 
     console.log(oneway_count)
     console.log(map[current_floor])
@@ -146,7 +158,6 @@ DungeonController.prototype.connectMapLine = function(){
 
     for(var from_y = 0; from_y < from_length; from_y++){
       //추가 갈림길 생성 대상이 아니라면 외길로 판단할 수 있다.
-        console.log("야 너 몇 번 돌아" + from_y)
       if(!connect_latter.includes(from_y)){
         //우선 현재 front 중 외길 카운트가 3인지 채크한 후 동작 결정.
         var need_connect = false;
@@ -157,7 +168,6 @@ DungeonController.prototype.connectMapLine = function(){
         }
         //선을 잇는 동작이 필요할 시 6번 시도
         if(need_connect){
-          console.log("그 처절한 시도나 함 봅시다. need : " + need_connect + ", from where? : " + (is_front_from ? from_y : to_y_for_oneway))
           for(var _ = 0; _ < 10; _++){
             var random_back = 0;
 
@@ -198,13 +208,14 @@ DungeonController.prototype.connectMapLine = function(){
       }
     }
 
-    //추가 갈림길을 0~1개 생성한다.
+    //추가 갈림길을 0~2개 생성한다.
     //from의 x좌표를 0으로, to의 x좌표를 1로 계산한다.
-    var more_line = (Math.floor(Math.random() * 2));
+    //무한 루프에 빠지지 않도록 시도는 최대 10회까지
+    var more_line = (Math.floor(Math.random() * 3));
     console.log("More line " + more_line)
     for(var i = 0; i < more_line; i++){
       var is_ok = false;
-      while(!is_ok){
+      for(var _ = 0; _ < 10; _++){
         var random_f_y = Math.floor(Math.random() * from_length);
         var random_t_y = Math.floor(Math.random() * to_length);
         is_ok = true;
@@ -222,6 +233,7 @@ DungeonController.prototype.connectMapLine = function(){
             t_y : (is_front_from ? random_t_y : random_f_y)
           });
           connected_vector.push( r_vector );
+          break;
         }
       }
     }
@@ -251,7 +263,6 @@ DungeonController.prototype.connectMapLine = function(){
     }
     //마지막으로 다음 순환을 위해 외길 카운트를 저장한다.
     oneway_count = temp_oneway_count;
-    console.log("허허허허허허")
 
     console.log(temp_oneway_count)
     console.log(oneway_count)

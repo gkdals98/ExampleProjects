@@ -6,7 +6,7 @@
       <MapScene v-if="current_scene===1"/>
       <StageScene v-if="current_scene===2"/>
     </div>
-    <PartyPanel @nextSign="setNextState"/>
+    <PartyPanel/>
   </div>
 </template>
 
@@ -17,7 +17,8 @@ import StageScene from "./StageScene/StageScene"
 import ResultScene from "./ResultScene/ResultScene"
 import PartyPanel from "./Common/UI/PartyPanel/PartyPanel"
 import StatusBar from "./Common/UI/StatusBar/StatusBar"
-import game_controller from "./Common/Core/GameController.js"
+import { game_controller } from "./Common/Core/GameController.js"
+import { game_model } from "./Common/Core/GameModel.js"
 
 const GACHA = 0
 const MAP = 1
@@ -32,22 +33,14 @@ export default {
     StageScene,
     PartyPanel
   },
-  data : function(){
-    return{
-      current_scene : GACHA
+  computed : {
+    current_scene : function(){
+      return game_model.state.current_game_state
     }
   },
-  methods:{
-    setNextState : function(btnsign){
-      if(btnsign==="Go"){
-        this.current_scene = MAP;
-      }
-      else if(btnsign==="Dive"){
-        this.current_scene = STAGE;
-      }
-      else if(btnsign==="Battle"){
-        this.current_scene = GACHA;
-      }
+  data : function(){
+    return{
+      party_panel_btntxt : "Go"
     }
   }
 }

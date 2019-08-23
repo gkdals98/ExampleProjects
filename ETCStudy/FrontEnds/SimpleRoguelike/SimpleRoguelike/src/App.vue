@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <Main v-if="game===0" @start-intro="gameStartFromMain"/>
-    <IntroScene v-if="game===1" @start-game="gameStartFromIntro"/>
-    <GameFrame v-if="game===2" @end-game="gameEndFromGame"/>
+    <Main v-if="cur_scene===0"/>
+    <IntroScene v-if="cur_scene===1"/>
+    <GameFrame v-if="cur_scene===2"/>
   </div>
 </template>
 
@@ -10,10 +10,8 @@
 import Main from "./components/MainMenu"
 import IntroScene from "./components/IntroScene"
 import GameFrame from "./components/Game/GameFrame"
-
-const MAIN = 0
-const INTRO = 1
-const GAME = 2
+import { game_controller } from "./components/Game/Common/Core/GameController.js"
+import { game_model } from "./components/Game/Common/Core/GameModel.js"
 
 export default {
   name: 'App',
@@ -22,20 +20,9 @@ export default {
     IntroScene,
     GameFrame
   },
-  data : function(){
-    return {
-      game : 0
-    }
-  },
-  methods: {
-    gameStartFromMain : function(){
-      this.game = INTRO;
-    },
-    gameStartFromIntro : function(){
-      this.game = GAME;
-    },
-    gameEndFromGame : function(result){
-      this.game = MAIN;
+  computed : {
+    cur_scene : function(){
+      return game_model.state.current_scene
     }
   }
 }

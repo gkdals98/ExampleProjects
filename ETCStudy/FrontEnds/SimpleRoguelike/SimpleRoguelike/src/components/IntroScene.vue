@@ -1,11 +1,13 @@
 <template>
   <div id="intro-scene">
     <h1>Down to the Dungeon...</h1>
-    <button v-on:click="startButtonClicked">- Ok. -</button>
+    <button v-on:click="gameStartButtonClicked">- Ok. -</button>
   </div>
 </template>
 
 <script>
+import { game_controller } from "./Game/Common/Core/GameController.js"
+
 export default {
   name : 'IntroScene',
   data : function(){
@@ -13,8 +15,9 @@ export default {
     }
   },
   methods:{
-    startButtonClicked : function(){
-      this.$emit('start-game')
+    gameStartButtonClicked : function(){
+      console.log("Finish Intro");
+      game_controller.startGame();
     }
   }
 }

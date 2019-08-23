@@ -6,6 +6,8 @@
 </template>
 
 <script>
+import { game_controller } from "./Game/Common/Core/GameController.js"
+
 export default {
   name : 'Main',
   data : function(){
@@ -16,7 +18,7 @@ export default {
   methods:{
     startButtonClicked : function(){
       console.log("Start Game")
-      this.$emit('start-intro')
+      game_controller.setIntroSceneAndClearData();
     }
   }
 }
