@@ -18,6 +18,7 @@ const GAME_GACHA = 0
 const GAME_MAP = 1
 const GAME_STAGE = 2
 const GAME_RESULT = 3
+const GAME_FINISH = 4
 /**
 *
 *  export
@@ -55,26 +56,84 @@ GameController.prototype.startGame = function(){
 }
 
 //Next Button의 활성화 여부. Scene 전환시엔 기본적으로 False이다.
+//Scene에 필요한 처리가 끝나면 Scene이 신호를 보내기로. Next 활성화 후에 Next 비활성화가 가능한 Scene은 없지.
 GameController.prototype.setNextButtonState = function(next_button_state){
   console.log(this.name + " : Set Next Button " + next_button_state);
   game_model.commit('setNextButtonClickable', next_button_state);
+}
+
+//Next Button의 활성화 여부. Scene 전환시엔 기본적으로 False이다.
+//Scene에 필요한 처리가 끝나면 Scene이 신호를 보내기로. Next 활성화 후에 Next 비활성화가 가능한 Scene은 없지.
+GameController.prototype.setNextButtonText = function(next_button_text){
+  game_model.commit('setNextButtonClickable', next_button_text);
 }
 
 //4. Game의 다음 장면을 결정하는 메서드.
 //인터페이스 도입해서 할라다가 더 꼬일 것 같아 그냥 if처리 하기로 함.
 GameController.prototype.getNextState = function(){
   console.log(this.name + " : get next state.");
-  if(game_model.state.current_game_state===GAME_GACHA){
-    gacha_controller.tryProgress();
-  }else if(game_model.state.current_game_state===GAME_MAP){
-    dungeon_controller.tryProgress();
-  }else if(game_model.state.current_game_state===GAME_STAGE){
-    stage_controller.tryProgress();
-  }else if(game_model.state.current_game_state===GAME_RESULT){
-    result_controller.tryProgress();
+  var get_next_game_state = GAME_MAP;
 
+  if(game_model.state.current_game_state===GAME_GACHA){
+    get_next_game_state = gacha_controller.tryProgress();
+    if(get_next_game_state === GAME_MAP)
+    {
+      this.createMapScene();
+    }
+    else
+    {
+      return;
+    }
   }
 
+  else if(game_model.state.current_game_state===GAME_MAP){
+    get_next_game_state = dungeon_controller.tryProgress();
+    if(get_next_game_state === GAME_STAGE)
+    {
+      this.setStageScene();
+    }
+    else
+    {
+      return;
+    }
+  }
+
+  else if(game_model.state.current_game_state===GAME_STAGE){
+    get_next_game_state = stage_controller.tryProgress();
+    if(get_next_game_state === GAME_STAGE)
+    {
+      stage_controller.progressPhase();
+    }
+    else if(get_next_game_state === GAME_MAP)
+    {
+      this.returnToMapScene();
+    }
+    //Game Clear, Game Over도 전부 이거 하나로 처리한다. 어느 쪽이건 Next를 눌러 진행되니 상관도 없음.
+    //구체적으론 Result를 저장하는 Model에 Result의 상태를 놓을 생각
+    else if(get_next_game_state === GAME_RESULT)
+    {
+      this.setResultScene();
+    }
+    else
+    {
+      return;
+    }
+  }
+  else if(game_model.state.current_game_state===GAME_RESULT){
+    get_next_game_state = result_controller.tryProgress();
+    if(get_next_game_state === GAME_GACHA)
+    {
+      this.stageUpAndSetGachaScene();
+    }
+    else if(get_next_game_state === GAME_FINISH)
+    {
+      this.returnToMainMenuScene();
+    }
+    else
+    {
+      return;
+    }
+  }
 }
 
 //4. 던전 생성 및 가챠 Scene 로드

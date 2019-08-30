@@ -9,7 +9,8 @@ export const game_model = new Vuex.Store({
     current_stage : 0,
     current_scene : 0,
     current_game_state : 0,
-    next_button_state : false
+    next_button_state : false,
+    next_button_text : "Go"
   },
   getters: {
   },
@@ -28,8 +29,11 @@ export const game_model = new Vuex.Store({
     stageUp( state ){
       state.current_stage++;
     },
-    setNextButtonClickable( next_button_state ){
+    setNextButtonClickable( state, next_button_state ){
       state.next_button_state = next_button_state;
+    },
+    setNextButtonText( state, next_button_text ){
+      state.next_button_text = next_button_text;
     }
   }
 });

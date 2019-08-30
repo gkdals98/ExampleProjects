@@ -5,13 +5,14 @@
     <GachaCharPanel v-bind:char="slot3"/>
     <GachaCharPanel v-bind:char="slot4"/>
     <GachaCharPanel v-bind:char="slot5"/>
-    <button class="btn default-ui rounded" id="next_button" v-on:click="StartButtonClicked" v-bind:clickable="isClickableNext">{{btnsign}}</button>
+    <button class="btn default-ui rounded" id="next_button" v-on:click="StartButtonClicked" v-bind:disabled="!isClickableNext">{{btnsign}}</button>
   </div>
 </template>
 
 <script>
 import GachaCharPanel from "./GachaCharPanel";
 import { game_model } from "../../Core/GameModel.js";
+import { game_controller } from "../../Core/GameController.js";
 
 export default {
   name : 'PartyPanel',
@@ -29,9 +30,9 @@ export default {
       return game_model.state.next_button_state
     },
     btnsign : function(){
-
+      return "Next"
     }
-  }
+  },
   components: {
     GachaCharPanel,
   },

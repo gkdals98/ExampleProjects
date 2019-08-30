@@ -2,6 +2,9 @@ import RoomNode from './RoomNode.js';
 import { map_model } from './CurrentMapModel.js';
 import { ui_valiables } from '../Data/UIValiables.js'
 import { game_controller } from "../Core/GameController.js"
+
+const GAME_STAGE = 2
+
 class DungeonController{
   constructor(){
     this.floor_length = 0;
@@ -12,6 +15,7 @@ class DungeonController{
 //진행 버튼 입력이 들어올 시 어디로 진행할지를 판단.
 DungeonController.prototype.tryProgress = function(){
   console.log(this.name + " : Try Progress.");
+  return GAME_STAGE;
 }
 
 DungeonController.prototype.clearDungeon = function(){

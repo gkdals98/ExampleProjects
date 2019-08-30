@@ -37,7 +37,19 @@
     
 * 다음으로 가는 판단의 주체는 사실 저 넷인데. Game Controller도 말이 Game Controller지 저 넷 + Result의 지령을 받아 장면만 바꿔주는게 역할이다.
 * 그렇다면 Party Panel은 어떤 방법으로 알맞은 Game Scene들에 지령을 전하나? 걍 GameController 통해서 가지 뭐.. 결국 어디가 뭐하고있는지 아는건 이놈이니.
-* 일단 파티버튼 비활성화 방안부터 좀 어떻게 해봐야할듯.
+* 일단 Next 버튼 비활성화 방안부터 좀 어떻게 해봐야할듯. 아래로 이어진다.
+
+#### Scene 전환의 룰
+* 결론적으로 Next 버튼을 활성화시킬 조건이 됐는지, 즉 다음 Scene으로 넘어갈 조건이 완료됐는지를 판단하는건 각각의 Scene들이다.
+* 다음 Scene이 뭐가 될 지 또한 각각의 Scene들이 판단해야한다.
+* Game의 흐름 관리는 GameController를 통해 이루어져야한다.
+* 위 세 가지 룰을 고려한 결과, 결국 서로의 영역을 침범할 수 밖에 없다는 결론이 나온다.
+* 따라서 Scene동작에 한해 아래와 같은 타협된 동작룰을 재정한다.
+    + Scene에서 Next Button을 활성화한다.
+    + Next Button을 누르면 이벤트에선 Game Controller를 호출한다.
+    + Game Controller는 다음 Scene이 어디인지를 각각의 Scene에게 물어본다.
+    + 각각의 Scene는 독자적인 판단을 통해... 다음 Scene이 어디인지를 정하고 답변한다.
+    + Scene이 GameController를 통해 next button 활성화 -> Game Controller가 현재 Scene에게 다음으로 넘어갈 Scene 질의, Scene Controller가 답변을 반환, Game Controller가 Scene을 Set
 
 ## Data Controller
 * 위에도 적었듯, Game Controller는 이름에 맞게 게임의 전체 흐름만 관장한다. 즉, 데이터는 다른 컨트롤러들이 관리한다.
@@ -51,3 +63,5 @@
 * Data를 참조하는건 어디서든 가능. 하지만 Data를 조작하는 것은 Controller로만 가능.
 * Data를 참조할 때는 Model에 어디어디서 보고있는지 주석으로 적어주자.
 
+## 플로우의 초반은 여기까지. 좀 더 제작하고 봅시다.
++ 뼈대가 생각보다 금방 만들어졌다. 이젠 첫 Scene에서 조건을 충족하지 못하면 다음으로 넘어갈 수 없으니 첫 Scene의 구현으로 넘어간다.

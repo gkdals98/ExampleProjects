@@ -22,4 +22,4 @@ ResultController.prototype.setResult = function(result){
   console.log(this.name + " : Set Result.");
 }
 
-export let stage_controller = new StageController();
+export let result_controller = new ResultController();
