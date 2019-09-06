@@ -12,4 +12,22 @@
 ### 2. 폰트
 + https://wit.nts-corp.com/2017/02/13/4258
 
+### 3. Promise
++ https://developers.google.com/web/fundamentals/primers/promises
++ 넌 뭔데 갑자기 나타나 나의 앞길을 막는가 하니 이미 유명한 개념이더라. 좀 읽어보고 정리하자.
++ 아래로 쭉 요약하자면 
+1. "1. 단일스레드" "2. 비동기" 환경인 자바스크립트에선 이벤트 발생 시 순차적 처리를 하기 위해 Promise라는 객체를 지원한다는것. 
+2. promise는 이벤트에 성공했을 시 호출할 resolve와 실패할 시 호출할 reject를 선언할 수 있다는 것.
+3. 이 과정에서 resolve를 표현하는 방법이 then이라는 것.
+4. then은 다시 promise를 리턴하며 아래와 같은 형식으로 하나의 이벤트 발생에 대한 순차적 async를 수행할 수 있다는 점
+5. catch는 rejects를 표현한다.
+````
+ayncThing1().then(function() {return asyncThing2();}).then(function(){return asyncThing3()})
 
+```` 
++ 추가로 아래와 같은 Promise.all 이벤트도 지원한다. 복수의 promise를 넘겨 해당 promise들이 전부 완료되면 수행될 메서드를 지정할 수 있다.
+```
+Promise.all([promise1, promise2]).then(function (values) {
+	console.log("모두 완료됨", values);
+});
+```

@@ -84,4 +84,3 @@
 5. 액터 (사망여부 포함)
 6. 대상 (사망여부 포함)
 7. before_attack, before_damaged, at_every_attack, at_every_damaged, after_attack, after_damaged, after_death, after_kill 큐.
-

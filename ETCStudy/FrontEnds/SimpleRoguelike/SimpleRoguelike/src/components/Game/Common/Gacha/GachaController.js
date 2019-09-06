@@ -27,7 +27,6 @@ GachaController.prototype.tryProgress = function(){
 //가챠 시도
 GachaController.prototype.tryGacha = function(){
   console.log(this.name + " : Start Gacha Scene.");
-
 }
 //가챠에서 획득한 캐릭터를 파티 Pane에 넣을 때, 파티 Pane의 데이터와 교체하기 위한 Data를 준비한다.
 GachaController.prototype.setPartyPaneReadyData = function(){

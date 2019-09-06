@@ -114,6 +114,17 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 ```
 npm run build
 ```
++ dependencies의 버전을 보기위해선 아래와 같이 수행
+```
+//local
+npm list
+//global
+npm list -g
+```
++ 최신버전 모듈받기 무슨차이로 이걸로는 되는데 npm install babel-core로는 안되는지 모르겠다. 다른 놈인가?
+```
+npm i @babel/core --save
+```
 #### Vuex
 + https://vuex.vuejs.org/kr/
 + Vue용 상태관리 패턴 라이브러리.

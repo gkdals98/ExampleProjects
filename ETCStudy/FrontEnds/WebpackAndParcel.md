@@ -256,6 +256,14 @@ devServer: {
 2. webpack-dev-server : 말 그대로 dev server
 3. webpack-dev-middleware : 헌데 이게 뭐하는 개념인질 모르겠음. 우선 이런게 있다고 적어만 두고 나중에 이해하면 수정해보자.
 
+
+####  프로젝트 내의 dependencies를 업데이트하는 방법.
+```
+npm i -g npm-check-updates
+npm-check-updates -u
+npm install
+```
+
 ## n. Tips 
 + 이해하고 넣은 부분은 아니다만 예제를 따라하다보니 아래 라이브러리는 유용할 것 같아 기록한다. 이제 이걸 여기 적어놨다는 사실만 잘 기억해내면 된다.
 ```

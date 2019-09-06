@@ -1,0 +1,52 @@
+{
+  "char_profiles" : [
+    {
+      "char_name" : "Kamila",
+      "char_rarity" : 2,
+      "char_position" : 1,
+      "char_style" : "Agent",
+      "char_description" : "The First agent of all",
+      "char_stamina" : 140,
+      "char_hit_point" : 3,
+      "char_dodge_rate" : 30,
+      "char_speed" : 15,
+      "char_tech" : 10,
+      "char_guard" : 0,
+      "char_armor" : 0,
+      "equipment" : [],
+      "skill_pool" : []
+    },
+    {
+      "char_name" : "Vivace",
+      "char_rarity" : 1,
+      "char_position" : 2,
+      "char_style" : "Hitman",
+      "char_description" : "No one can see him.",
+      "char_stamina" : 110,
+      "char_hit_point" : 2,
+      "char_dodge_rate" : 40,
+      "char_speed" : 20,
+      "char_tech" : 15,
+      "char_guard" : 0,
+      "char_armor" : 0,
+      "equipment" : [],
+      "skill_pool" : []
+    },
+    {
+      "char_name" : "Enbar",
+      "char_rarity" : 0,
+      "char_position" : 0,
+      "char_style" : "Ranger",
+      "char_description" : "Then there was no one left.",
+      "char_stamina" : 170,
+      "char_hit_point" : 4,
+      "char_dodge_rate" : 30,
+      "char_speed" : 10,
+      "char_tech" : 15,
+      "char_guard" : 0,
+      "char_armor" : 0,
+      "equipment" : [],
+      "skill_pool" : []
+    }
+  ]
+}
