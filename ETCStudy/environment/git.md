@@ -86,8 +86,12 @@ hotfix는 master에서 부터 작업된 브랜치이기에 별도의 작업이 �
 + 
 
 #### . Merge vs Rebase
-+ Merge는 두 개의 Branch가 서로 충돌하지 않을 경우 두 Branch의 수정사항들을 합치는 방식이다.
-+ Rebase는 두 브랜치 fix1, fix2에 대해 fix2의 변경사항을 patch 형식으로 fix1에 적용하는 방식을 말한다.
++ Merge는 두 개의 Branch를 합쳐 새 브랜치를 만드는 방법이다.
++ Rebase는 베이스를 재설정 한다는 뜻으로 두 브랜치 fix1, fix2에 대해 둘 중 하나를 새 base로 잡고 나머지 하나와의 차이점을 패치형식으로 덧붙이는 방식이다.
++ 가령 fix1, fix2 중 fix1을 새 base로 잡는다면 fix2의 내용을 fix1에 덧붙여 fix1에서 이어지는 커밋으로 바꾸는 방식이다.
++ https://velog.io/@godori/Git-Rebase - 해당 글에 알기쉽게 잘 설명되어있다.
++ Rebase는 두 브렌치의 히스토리를 일련의 과정으로 남기며, 복잡한 Merge 기록을 없앨 수 있다는 점이 좋다.
++ 다만, Rebase의 경우, 이미 저장소에 저장한 Commit을 Rebase해선 안된다.... 는데? 즉, 이미 저장소에 commit한 내용을 rebase로 합치지 말라는거지... rebase로 합치는 순간 합치기 전의 내용을 추적할 수 없게 된다. 뭐 이런거구만.
 
 
 ## Git 명령어 위주 정리
@@ -118,7 +122,7 @@ hotfix는 master에서 부터 작업된 브랜치이기에 별도의 작업이 �
 + 정규식을 사용해 여러파일을 한 번에 삭제할 수도 있다.
 
 #### 6. git mv
-+ git mv는 특정 파일의 이름을 바꿀 때 Stage사용한다.
++ git mv는 특정 파일의 이름을 바꿀 때 사용한다.
 + ```git mv <file.oldname> <file.newname>``` 으로 사용한다.
 + git 관점에선 rm 후 add와 같은 동작이다.
 
@@ -150,7 +154,7 @@ hotfix는 master에서 부터 작업된 브랜치이기에 별도의 작업이 �
 + ```git ls-remote <connection name>``` 은 해당 연결의 모든 Refs를 보여준다.
 
 #### 11. git fetch
-+ remote상의 데이터를 모두 가져오는 명령어.
++ fetch_head 최신본을 가져오는 명령어. 즉, origin/master를 remote의 최신으로 업데이트한다.
 + 이미 작업중이던 저장소에서 수행하면 수정된 부분들을 가져오되, Merge해주지는 않는다. Merge까지 포함하는게 git pull.
 + ```git fetch <remote name>``` : **저장소 정보를 remote에 동기화하기 위해 사용하는 명령어.**
 
@@ -181,15 +185,21 @@ $ git config --global alias.st status
 + **구체적으론 브랜치를 옮기기 위한 명령어이다.**
 + 브랜치를 옮기면서 내용을 받아오기때문에 해당 branch를 받아오는 명령어처럼도 동작할 뿐이다.
 + ```git checkout <branch name>``` : HEAD를 특정 Branch로 옮기고 Branch가 가리키는 commit을 참조해 코드를 받아온다.
++ ```git checkout <branch name> .``` : dot 옵션은 리눅스 경로지정자이다. 경로를 지정하면 달라지는게 무엇이냐, 해당 디렉토리의 모든 코드를 checkout 받는 branch 기준으로 덮어써버린다. 삭제된 파일도 전부 복구된다.
 
 #### 16. git push
 + ```git push <remote name> <branch>:<remote branch> ``` : 해당 remote의 remote branch에 branch를 push한다. branch를 새로 전송하는 개념이기에 branch name은 로컬에서 명령어를 실행하는 시점에서 정할 수 있다.
 + 위 명령어로 전송된 branch는 나중엔 일반적인 Remote Tracking Branch들처럼 ```<remote name>/<remote branch>``` 로 참조할 수 있다.
 
-#### 17. git rebase
-+ ```git rebase <branch name>``` 명령어는 
+#### 17. git pull
++ ```git pull <remote name> <branch name>``` : fetch + merge. remote branch 상의 모든 변화 내용을 적용하며 어떤 변화가 있었는지 로그를 찍는다.
+
+#### 18. git rebase
++ ```git rebase <branch name>``` : 현재 branch를 새 base로 branch name의 branch에 적용된 변화사항을 적용해 새 커밋을 만든다. 즉 변화 내용을 패치(fetch가 아니라 프로그램 패치할 때 그 패치)하는 식으로 두 브렌치의 내용을 합친다. 공식문서 가서 그림보면 이해가 빠르다.
+
 
 
 ##결론
 + 우리가 찾던 특정 디렉토리 Sync를 가장 안전하게 돌릴 방법
+```git pull origin master``` 한 다음.
 ```git checkout origin/master -- *```

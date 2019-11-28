@@ -56,7 +56,7 @@ function getGreeting(user) {
 
 #### [2] 최초 선언에서 보이는 문법들
 + **React Component의 정의** : React.Component를 extends 하는 class로 컴포넌트 선언을 한다.
-```class componnent extends React.Component {}```
+```class Componnent_Name extends React.Component {}```
 
 + **render()** : render는 ReactDOM이 컴포넌트를 어떤 형태로 DOM상에 구현할 지를 전달하는 부분이다.
 ```
@@ -365,19 +365,21 @@ componentDidUpdate(prevProps, prevState, snapshot){
 
 ### 5. 리엑트 개발 환경 준비
 ####  Webpack으로 React 개발환경 만들기
++ create-react-app이란 npm 모듈이 있지만 vue cli에 비해 실용성이 없다. 아래 링크의 방법으로 수동으로 프로젝트를 생성하자.
 + https://medium.com/@benjaminwoojang/webpack-4%EC%99%80-babel-7%EC%9C%BC%EB%A1%9C-react%EA%B0%9C%EB%B0%9C%ED%99%98%EA%B2%BD-%EC%85%8B%EC%97%85%ED%95%98%EA%B8%B0-340e00d2760b
-
-#### ReactDOM 
-+ Webpack dev server 핫리로드랑 관련된 이야기같은데 react-dom을 npm으로 가져와야 React로 만들어진 DOM과 가상 DOM을 실제 DOM에 렌더링 할 수 있다고 함.
 ```
 >> npm install react react-dom
 ```
-+ 다음으로 해야할 건 webpack 환경 준비 - https://medium.com/@benjaminwoojang/webpack-4%EC%99%80-babel-7%EC%9C%BC%EB%A1%9C-react%EA%B0%9C%EB%B0%9C%ED%99%98%EA%B2%BD-%EC%85%8B%EC%97%85%ED%95%98%EA%B8%B0-340e00d2760b
++ ReactDOM이란? - React로 만들어진 DOM과 가상 DOM을 실제 DOM에 랜더링하기위해 필요한 라이브러리. 마지막에 ReactDOM.render로 html상의 특정 div에 React로 생성된 DOM을 로드시켜야한다.
 
 
-### 6. 문법
+### 6. 프로젝트 관리
++ https://ko.reactjs.org/community/examples.html
++ 적절한 예시들은 위에 다 있다.
++ js, css를 나눠서 관리한다.
+
+### 7. 추가 문법
 #### input 받기
 https://velopert.com/3634
-
-#### ajax
+###
 

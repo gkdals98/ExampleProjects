@@ -1,4 +1,8 @@
 # SCSS
+```
+npm install sass-loader node-sass --save-dev
+```
++ Vue loader의 경우, 버그가 있어 sass-loader@7.3.1 버전 이후의 sass-loader와 호환이 되지 않는다. 추후 지원을 기다려야함.
 + https://poiemaweb.com/sass-basics - 가이드
 + https://www.google.com/search?q=rgb+picker&oq=rgb+p&aqs=chrome.1.69i57j0l5.3919j0j7&sourceid=chrome&ie=UTF-8 - RGB Picker
 + SCSS 문법을 공부하며 잊어버리기 쉬운 문법이나 Tip을 정리할 계획이다. 하는김에 CSS 쪽도 조금 복습하자.
@@ -24,9 +28,14 @@
     * **margin-top, margin-left, margin-right, margin-bottom** : 컴포넌트와 상위 컴포넌트의 간격
         + **auto** : block component에 margin값으로 auto를 주면 자동으로 남는 여백 절반을 margin으로 두며 중앙 정렬이 된다.
     * **padding-top, padding-left, padding-right, padding-bottom** : 
+    * https://poiemaweb.com/css3-flexbox : **flex 레이아웃에 대한 설명**
 + **크기 속성**
 + **색상, 효과**
     * **border-radius: 10px 10px 10px 10px / 10px 10px 10px 10px** : 모서리를 둥글게 만드는 방법.
+    
+### 3. CSS 애니메이션
++ 우선 아래 링크로 대체
++ https://developer.mozilla.org/ko/docs/Web/CSS/CSS_Transitions/Using_CSS_transitions
 
 ### 3. SCSS 문법
 + import, extend, mixin 관련 - http://megaton111.cafe24.com/2017/01/13/sass-%EB%AC%B8%EB%B2%95-%EB%B6%88%EB%9F%AC%EC%98%A4%EA%B8%B0import-%EC%83%81%EC%86%8Dextend-%EB%AF%B9%EC%8A%A4%EC%9D%B8mixin/
@@ -59,6 +68,16 @@ div #app{
     @include main-style( );
 }
 ```
++ 외부 SCSS : 외부 파일에 file_name.scss와 같은 식으로 scss를 정의해놓은 경우 이를 import해서 사용할 수 있다.
+ ```
+ //외부 scss를 불러오는 경우
+ @import "../common/frame_var.scss";
+ 
+ //이후 마치 파일 내에 이미 정의된 값처럼 사용할 수 있다.
+ #frame{
+   width: $c-width;
+ }
+ ```
 ### 4. 좋은 템플릿들
 + http://rwdb.kr/freesource/ - 온갖 무료 리소스들이 있는 사이트. 
 + http://rwdb.kr/button_10/ - 위 사이트 들어갈 때 본 정말 마음에 드는 버튼 모음.

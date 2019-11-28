@@ -76,7 +76,7 @@ C:\~~~~>
 ### 2. npm modules
 + 많이 쓸, 혹은 일반적으로 많이 쓰인다 하는 모듈들의 이름을 기록하자. 간단하게 적고갈 수 있는 모듈은 사용법 내지는 설명도 적고 일단 npm install 키워드 위주로 적는다.
 + Mocha - JavaScript 단위 테스트 프레임 워크.
-+ sass-loader + node-sass
+#### sass-loader + node-sass
     * sass용 loader, node에서 sass를 돌리기 위한 툴
     * 설치 및 use 방법
 ```

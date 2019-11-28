@@ -125,6 +125,11 @@ npm list -g
 ```
 npm i @babel/core --save
 ```
+#### Vue CLI web gui
++ 아래 명령어로 실행.
+```
+vue ui
+```
 #### Vuex
 + https://vuex.vuejs.org/kr/
 + Vue용 상태관리 패턴 라이브러리.
